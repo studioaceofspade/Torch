@@ -1,2 +1,5 @@
 django==1.5
 django_extensions
+ipython
+-e git+git://github.com/jlward/nosedjango.git@v1.0.0b1#egg=nosedjango
+flake8

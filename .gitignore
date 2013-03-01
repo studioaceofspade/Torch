@@ -36,3 +36,6 @@ nosetests.xml
 
 # DB
 dev.db
+
+# Test
+.noseids
