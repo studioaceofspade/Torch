@@ -125,6 +125,7 @@ INSTALLED_APPS = (
     # 'django.contrib.admindocs',
     'django_extensions',
     'torch.idea',
+    'torch.vote',
 )
 
 # A sample logging configuration. The only tangible logging
