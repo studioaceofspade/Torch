@@ -1,4 +1,5 @@
-from django.contrib.auth.models import User
+from django.db import IntegrityError
+from django.contrib.auth.models import User, AnonymousUser
 from django.test import TestCase
 
 from torch.idea.models import create_idea
@@ -35,6 +36,7 @@ class VoteTestCase(TestCase):
         self.assertNotEqual(idea, None)
         self.assertEqual(vote.voter, user)
         self.assertEqual(vote.idea, idea)
+        self.assertEqual(vote.ip, None)
 
     def test_get_votes_for_idea(self):
         # Create two ideas, give one of them one vote, and the other two votes,
@@ -81,3 +83,35 @@ class VoteTestCase(TestCase):
             set(votes.values_list('pk', flat=True)),
             set([vote_2.pk, vote_3.pk]),
         )
+
+    def test_ip_address_for_anon_users(self):
+        user = AnonymousUser()
+        idea = create_idea(
+            user=User.objects.create(),
+            title='test',
+            description='foobar',
+        )
+        vote = create_vote(
+            user=user,
+            idea=idea,
+            ip='127.0.0.1',
+        )
+        self.assertEqual(vote.voter, None)
+        self.assertEqual(vote.ip, '127.0.0.1')
+        self.assertEqual(vote.idea, idea)
+
+    def test_no_ip_with_anon_user(self):
+        user = AnonymousUser()
+        idea = create_idea(
+            user=User.objects.create(),
+            title='test',
+            description='foobar',
+        )
+        with self.assertRaises(IntegrityError) as e:
+            create_vote(
+                user=user,
+                idea=idea,
+            )
+        self.assertEqual(
+            str(e.exception),
+            'Must pass in ip address for anon users.')
