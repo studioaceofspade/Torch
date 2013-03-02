@@ -2,7 +2,7 @@ from django.contrib.auth.models import User
 from django.test import TestCase
 
 from torch.idea.models import Idea, create_idea, CREATIVITY
-from torch.idea.forms import IdeaForm
+from torch.idea.forms import make_IdeaForm
 
 
 class IdeaTestCase(TestCase):
@@ -35,6 +35,7 @@ class IdeaTestCase(TestCase):
 class IdeaFormTestCase(TestCase):
     def test_empty(self):
         # Build the form with no input. Equivalent to no POST vars.
+        IdeaForm = make_IdeaForm(None)
         form = IdeaForm({})
         is_valid = form.is_valid()
         assert not is_valid
@@ -46,8 +47,8 @@ class IdeaFormTestCase(TestCase):
 
     def test_valid(self):
         user = User.objects.create()
+        IdeaForm = make_IdeaForm(user)
         params = {
-            'author': user.pk,
             'title': 'title',
             'description': 'description',
             'tag': CREATIVITY,
@@ -77,11 +78,11 @@ class IdeaFormTestCase(TestCase):
     def test_invalid_tag(self):
         user = User.objects.create()
         params = {
-            'author': user.pk,
             'title': 'title',
             'description': 'description',
             'tag': 1000,  # Not a valid tag.
         }
+        IdeaForm = make_IdeaForm(user)
         form = IdeaForm(params)
         is_valid = form.is_valid()
         assert not is_valid
@@ -96,19 +97,16 @@ class IdeaFormTestCase(TestCase):
 
     def test_invalid_user(self):
         params = {
-            'author': 1,  # Not a valid user.
             'title': 'title',
             'description': 'description',
             'tag': CREATIVITY,
         }
+        IdeaForm = make_IdeaForm(None)
         form = IdeaForm(params)
         is_valid = form.is_valid()
         assert not is_valid
 
         self.assertEqual(
-            form.errors['author'],
-            [
-                'Select a valid choice. That choice is '
-                'not one of the available choices.',
-            ],
+            form.errors['__all__'],
+            ['This field is required.'],
         )
