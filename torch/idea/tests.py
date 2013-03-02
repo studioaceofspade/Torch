@@ -38,22 +38,11 @@ class IdeaFormTestCase(TestCase):
         form = IdeaForm({})
         is_valid = form.is_valid()
         assert not is_valid
-        self.assertEqual(
-            form.errors['author'],
-            ['This field is required.'],
-        )
-        self.assertEqual(
-            form.errors['title'],
-            ['This field is required.'],
-        )
-        self.assertEqual(
-            form.errors['description'],
-            ['This field is required.'],
-        )
-        self.assertEqual(
-            form.errors['tag'],
-            ['This field is required.'],
-        )
+        for key in form.errors.keys():
+            self.assertEqual(
+                form.errors[key],
+                ['This field is required.'],
+            )
 
     def test_valid(self):
         user = User.objects.create()
