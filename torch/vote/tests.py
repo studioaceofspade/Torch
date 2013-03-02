@@ -41,31 +41,32 @@ class VoteTestCase(TestCase):
     def test_get_votes_for_idea(self):
         # Create two ideas, give one of them one vote, and the other two votes,
         # make sure the expected counts are correct.
-        user = User.objects.create()
+        user_1 = User.objects.create(username='1')
+        user_2 = User.objects.create(username='2')
 
         # Two ideas
         idea_1 = create_idea(
-            user=user,
+            user=user_1,
             title='test',
             description='foobar',
         )
         idea_2 = create_idea(
-            user=user,
+            user=user_1,
             title='test',
             description='foobar',
         )
 
         # Three votes, one 1 and two for 2
         vote_1 = create_vote(
-            user=user,
+            user=user_1,
             idea=idea_1,
         )
         vote_2 = create_vote(
-            user=user,
+            user=user_1,
             idea=idea_2,
         )
         vote_3 = create_vote(
-            user=user,
+            user=user_2,
             idea=idea_2,
         )
 
@@ -115,3 +116,31 @@ class VoteTestCase(TestCase):
         self.assertEqual(
             str(e.exception),
             'Must pass in ip address for anon users.')
+
+    def test_unique_together(self):
+        user = User.objects.create()
+        idea = create_idea(
+            user=user,
+            title='test',
+            description='foobar',
+        )
+
+        vote = Vote.objects.create(
+            voter=user,
+            idea=idea,
+        )
+
+        # Show that there is a unique together restraint here.
+        with self.assertRaises(IntegrityError):
+            Vote.objects.create(
+                voter=user,
+                idea=idea,
+            )
+
+        # Show that the helper method for creating votes deals with the unique
+        # together restraint.
+        second_vote = create_vote(
+            user=user,
+            idea=idea,
+        )
+        self.assertEqual(vote.pk, second_vote.pk)
