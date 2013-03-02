@@ -9,6 +9,18 @@ from torch.idea.models import Idea
 
 
 class Vote(models.Model):
+    """
+    ``voter`` is the user that cast the vote. If it is blank/null then the
+    ``ip`` must be set. (This means that an AnonymousUser cast a vote.
+
+    ``idea`` is the idea that ``voter`` voted on. This field cannot be
+    blank/null.
+
+    ``ip`` is only used if the vote was cast by an AnonymousUser. In theory the
+    ``ip`` field should be unique.
+
+    ``created`` is the date the instance was created.
+    """
     voter = models.ForeignKey(
         User,
         blank=True,
@@ -21,10 +33,19 @@ class Vote(models.Model):
     created = CreationDateTimeField(null=True)
 
     class Meta:
+        """
+        Ensure that a voter can only cast one vote per idea.
+        """
         unique_together = ['voter', 'idea']
 
 
 def create_vote(user, idea, ip=None):
+    """
+    This is a helper function to create a vote. If ``user`` is an AnonymousUser
+    then ``ip`` must be set. Otherwise call ``get_or_create`` on the Vote table
+    to ensure that we are not violating the unique_together constraint between
+    ``voter`` and ``idea``.
+    """
     vote_kwargs = {
         'idea': idea,
     }

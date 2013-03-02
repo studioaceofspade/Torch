@@ -11,7 +11,7 @@ DOWNTOWN_AREAS = 1
 ENTREPRENEURSHIP = 2
 INNOVATION = 3
 
-STATUS_CHOICES = (
+TAG_CHOICES = (
     (CREATIVITY, 'Creativity'),
     (DOWNTOWN_AREAS, 'Downtown Areas'),
     (ENTREPRENEURSHIP, 'Entrepreneurship'),
@@ -20,17 +20,31 @@ STATUS_CHOICES = (
 
 
 class Idea(models.Model):
+    """
+    ``title`` is the viewable name of the idea in question.
+
+    ``description`` is a short description of the idea.
+
+    ``author`` is the user that created a given instance of Idea.
+
+    ``tag`` is one of ``TAG_CHOICES``. Ideally ``TAG_CHOICES`` is in
+    alphabetical order to make sorting easier.
+    """
     title = models.CharField(max_length=200)
     description = models.TextField()
 
     author = models.ForeignKey(User, related_name='ideas')
-    tag = models.SmallIntegerField(choices=STATUS_CHOICES, db_index=True)
+    tag = models.SmallIntegerField(choices=TAG_CHOICES, db_index=True)
 
     created = CreationDateTimeField(null=True)
     modified = ModificationDateTimeField(null=True)
 
 
 def create_idea(user, title, description, tag):
+    """
+    This is a helper function to create an Idea object. I am not sure if it is
+    actually needed, but for now lets keep it.
+    """
     return Idea.objects.create(
         author=user,
         title=title,
