@@ -2,7 +2,7 @@ from django.db import IntegrityError
 from django.contrib.auth.models import User, AnonymousUser
 from django.test import TestCase
 
-from torch.idea.models import create_idea
+from torch.idea.models import create_idea, CREATIVITY
 from torch.vote.models import Vote, create_vote, get_votes_for_idea
 
 
@@ -13,6 +13,7 @@ class VoteTestCase(TestCase):
             user=user,
             title='test',
             description='foobar',
+            tag=CREATIVITY,
         )
         vote = Vote.objects.create(
             voter=user,
@@ -28,6 +29,7 @@ class VoteTestCase(TestCase):
             user=user,
             title='test',
             description='foobar',
+            tag=CREATIVITY,
         )
         vote = create_vote(
             user=user,
@@ -49,11 +51,13 @@ class VoteTestCase(TestCase):
             user=user_1,
             title='test',
             description='foobar',
+            tag=CREATIVITY,
         )
         idea_2 = create_idea(
             user=user_1,
             title='test',
             description='foobar',
+            tag=CREATIVITY,
         )
 
         # Three votes, one 1 and two for 2
@@ -91,6 +95,7 @@ class VoteTestCase(TestCase):
             user=User.objects.create(),
             title='test',
             description='foobar',
+            tag=CREATIVITY,
         )
         vote = create_vote(
             user=user,
@@ -107,6 +112,7 @@ class VoteTestCase(TestCase):
             user=User.objects.create(),
             title='test',
             description='foobar',
+            tag=CREATIVITY,
         )
         with self.assertRaises(IntegrityError) as e:
             create_vote(
@@ -123,6 +129,7 @@ class VoteTestCase(TestCase):
             user=user,
             title='test',
             description='foobar',
+            tag=CREATIVITY,
         )
 
         vote = Vote.objects.create(

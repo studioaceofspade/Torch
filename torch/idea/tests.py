@@ -1,7 +1,7 @@
 from django.contrib.auth.models import User
 from django.test import TestCase
 
-from torch.idea.models import Idea, create_idea
+from torch.idea.models import Idea, create_idea, CREATIVITY
 
 
 class IdeaTestCase(TestCase):
@@ -11,6 +11,7 @@ class IdeaTestCase(TestCase):
             author=user,
             title='test',
             description='foobar',
+            tag=CREATIVITY,
         )
         self.assertNotEqual(idea, None)
 
@@ -22,6 +23,7 @@ class IdeaTestCase(TestCase):
             user=user,
             title='test',
             description='foobar',
+            tag=CREATIVITY,
         )
         self.assertNotEqual(idea, None)
         self.assertEqual(idea.author, user)
