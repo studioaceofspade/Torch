@@ -20,6 +20,9 @@ class Vote(models.Model):
 
     created = CreationDateTimeField(null=True)
 
+    class Meta:
+        unique_together = ['voter', 'idea']
+
 
 def create_vote(user, idea, ip=None):
     vote_kwargs = {
@@ -32,7 +35,8 @@ def create_vote(user, idea, ip=None):
         vote_kwargs['ip'] = ip
     else:
         vote_kwargs['voter'] = user
-    return Vote.objects.create(**vote_kwargs)
+    vote, _ = Vote.objects.get_or_create(**vote_kwargs)
+    return vote
 
 
 def get_votes_for_idea(idea):
