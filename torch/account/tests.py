@@ -70,3 +70,27 @@ class AccountClientTestCase(TestCase):
         self.assertEqual(user.username, 'username')
         self.assertEqual(user.first_name, 'first_name')
         assert user.check_password('pw')
+
+    def test_logged_in_user_can_create_idea(self):
+        c = self.client
+        c.logout()
+
+        create_idea = reverse('idea_create')
+        account_login = reverse('account_login')
+
+        # Try to GET the create_idea page without being logged in.
+        r = c.get(create_idea)
+        self.assertEqual(r.status_code, 302)
+
+        # Login and try again.
+        User.objects.create_user('user', password='pw')
+        params = {
+            'username': 'user',
+            'password': 'pw',
+        }
+        r = c.post(account_login, params)
+        self.assertEqual(r.status_code, 302)
+
+        # And now it works
+        r = c.get(create_idea)
+        self.assertEqual(r.status_code, 200)
