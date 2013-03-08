@@ -1,8 +1,7 @@
 from django.contrib.auth import authenticate, login as django_login
 from django.template import RequestContext
 from django.contrib.auth.forms import AuthenticationForm
-from django.shortcuts import redirect
-from django.shortcuts import render_to_response
+from django.shortcuts import redirect, render_to_response
 
 
 def login(request):

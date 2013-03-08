@@ -1,3 +1,4 @@
+from django.core.urlresolvers import reverse
 from django.contrib.auth.models import User
 from django.test import TestCase
 
@@ -110,3 +111,26 @@ class IdeaFormTestCase(TestCase):
             form.errors['__all__'],
             ['This field is required.'],
         )
+
+
+class IdeaClientTestCase(TestCase):
+    def setUp(self, *args, **kwargs):
+        self.user = User.objects.create_user('user', password='userpw')
+        assert self.client.login(username='user', password='userpw')
+
+    def test_create_idea(self):
+        c = self.client
+
+        create_idea = reverse('idea_create')
+        params = {
+            'title': 'title',
+            'description': 'description',
+            'tag': CREATIVITY,
+        }
+        r = c.post(create_idea, params)
+        self.assertEqual(r.status_code, 302)
+
+        idea = Idea.objects.get()
+        self.assertEqual(idea.title, 'title')
+        self.assertEqual(idea.description, 'description')
+        self.assertEqual(idea.author, self.user)

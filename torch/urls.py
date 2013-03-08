@@ -7,7 +7,8 @@ from django.conf.urls import patterns, include, url
 urlpatterns = patterns('',
     # Examples:
     url(r'^$', 'torch.views.home', name='home'),
-    # url(r'^torch/', include('torch.foo.urls')),
+    url(r'^torch/', include('torch.idea.urls')),
+    url(r'^accounts/', include('torch.account.urls')),
 
     # Uncomment the admin/doc line below to enable admin documentation:
     # url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
