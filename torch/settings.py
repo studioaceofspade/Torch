@@ -161,3 +161,5 @@ LOGGING = {
         },
     }
 }
+
+TEMPLATE_STRING_IF_INVALID = '*** Invalid template variable ***'
