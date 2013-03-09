@@ -1,3 +1,4 @@
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect, render_to_response, get_object_or_404
 from django.template import RequestContext
@@ -37,5 +38,38 @@ def view(request, idea_id):
 
     return render_to_response(
         'idea/view.html',
+        context_instance=context,
+    )
+
+
+def manage(request):
+    idea_qs = Idea.objects.all().select_related()
+    sort = request.GET.get('sort')
+    available_sorts = (
+        'num_votes',
+        'popular',
+    )
+    if sort and sort in available_sorts:
+        if sort == 'popular':
+            # TODO Make this actually do something
+            pass
+        else:
+            idea_qs = idea_qs.order_by(sort)
+    paginator = Paginator(idea_qs, 10)  # Paginate at 10
+
+    page = request.GET.get('page')
+
+    try:
+        ideas = paginator.page(page)
+    except PageNotAnInteger:
+        ideas = paginator.page(1)
+    except EmptyPage:
+        ideas = paginator.page(paginator.num_pages)
+    context = RequestContext(request, {
+        'sort': sort,
+        'ideas': ideas,
+    })
+    return render_to_response(
+        'idea/manage.html',
         context_instance=context,
     )

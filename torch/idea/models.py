@@ -51,6 +51,9 @@ class Idea(models.Model):
 
     objects = IdeaManager()
 
+    class Meta:
+        ordering = ['-created']
+
 
 def create_idea(user, title, description, tag):
     """
