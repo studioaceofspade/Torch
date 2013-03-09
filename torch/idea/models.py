@@ -19,6 +19,16 @@ TAG_CHOICES = (
 )
 
 
+class IdeaManager(models.Manager):
+    def get_queryset(self):
+        return super(
+            IdeaManager,
+            self,
+        ).get_queryset().aggregate(
+            num_votes=models.Count('votes'),
+        )
+
+
 class Idea(models.Model):
     """
     ``title`` is the viewable name of the idea in question.
@@ -38,6 +48,8 @@ class Idea(models.Model):
 
     created = CreationDateTimeField(null=True)
     modified = ModificationDateTimeField(null=True)
+
+    objects = IdeaManager()
 
 
 def create_idea(user, title, description, tag):

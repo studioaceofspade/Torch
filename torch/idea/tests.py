@@ -148,7 +148,7 @@ class IdeaClientTestCase(TestCase):
         )
 
         view_idea = reverse('idea_view', kwargs={'idea_id': idea.pk})
-        with self.assertNumQueries(2):
+        with self.assertNumQueries(1):
             r = c.get(view_idea)
 
         self.assertContains(r, TITLE)
