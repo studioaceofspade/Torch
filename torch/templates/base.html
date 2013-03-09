@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+    	<!-- This is so meta, man. -->
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <title>Horizon || a community conversation on entrepreneurship, innovation and creativity || Elkhart County, Indiana</title>
+        <meta name="description" content="Horizon is acommunity conversation on entrepreneurship, innovation and creativity happening in Elkhart County, Indiana">
+       
+        <!-- Style Inclusions -->
+        <link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600' rel='stylesheet' type='text/css'>
+		<link rel="stylesheet" href="{{ STATIC_URL }}css/bootstrap.css">
+		<link rel="stylesheet" href="{{ STATIC_URL }}css/style.css">
+        
+        <!-- Setup responsive on mobile devices with correct scaling -->
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    </head>
+    
+    <body>
+		<header id="header" class="cf mbot">
+        	<h1 class="brand pull-left">
+            	<a href="#">
+					<img src="{{ STATIC_URL }}img/horizon-brand.png" alt="Horizon is acommunity conversation on entrepreneurship, innovation and creativity happening in Elkhart County, Indiana">
+                </a>
+            </h1>
+            <nav class="pull-right main-nav">
+            	<ul>
+                	<li><a href="#">about</a></li>
+                    <li><a href="#">ideas</a></li>
+                    <li><a href="#">contact</a></li>
+                    <li><a href="#">login</a></li>
+                    <li class="orange"><a href="#">submit your ideas!</a></li>
+                </ul>
+            </nav>
+        </header>
+        
+		<div class="container cf mbot">
+			<h1 class="title">{% block page_title %}{% endblock %}</h1>
+		</div>
+		{% block content %}{% endblock %}
+            
+        <footer id="footer">
+        	
+        </footer>
+
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+        
+        <!--
+        <script>window.jQuery || document.write('<script src="js/vendor/jquery-1.9.1.min.js"><\/script>')</script>
+        -->
+
+        <!--
+        <script src="js/plugins.js"></script>
+        -->
+		{% block extra_script %}{% endblock %}
+		<!--
+        <script>
+            var _gaq=[['_setAccount','UA-XXXXX-X'],['_trackPageview']];
+            (function(d,t){var g=d.createElement(t),s=d.getElementsByTagName(t)[0];
+            g.src=('https:'==location.protocol?'//ssl':'//www')+'.google-analytics.com/ga.js';
+            s.parentNode.insertBefore(g,s)}(document,'script'));
+        </script>
+        -->
+    </body>
+    
+</html>

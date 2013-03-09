@@ -1,130 +1,77 @@
-<!DOCTYPE html>
-<html lang="en">
-    <head>
-    	<!-- This is so meta, man. -->
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-        <title>Horizon || a community conversation on entrepreneurship, innovation and creativity || Elkhart County, Indiana</title>
-        <meta name="description" content="Horizon is acommunity conversation on entrepreneurship, innovation and creativity happening in Elkhart County, Indiana">
-       
-        <!-- Style Inclusions -->
-        <link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600' rel='stylesheet' type='text/css'>
-		<link rel="stylesheet" href="{{ STATIC_URL }}css/bootstrap.css">
-		<link rel="stylesheet" href="{{ STATIC_URL }}css/style.css">
-        
-        <!-- Setup responsive on mobile devices with correct scaling -->
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+{% extends "base.html" %}
 
-    </head>
-    
-    <body>
-		<header id="header" class="cf mbot">
-        	<h1 class="brand pull-left">
-            	<a href="#">
-					<img src="{{ STATIC_URL }}img/horizon-brand.png" alt="Horizon is acommunity conversation on entrepreneurship, innovation and creativity happening in Elkhart County, Indiana">
-                </a>
-            </h1>
-            <nav class="pull-right main-nav">
-            	<ul>
-                	<li><a href="#">about</a></li>
-                    <li><a href="#">ideas</a></li>
-                    <li><a href="#">contact</a></li>
-                    <li><a href="#">login</a></li>
-                    <li class="orange"><a href="#">submit your ideas!</a></li>
-                </ul>
-            </nav>
-        </header>
-        
-        <div id="login" class="cf page">
-        
-            <div class="container cf mbot">
-	            <h1 class="title">Login to your account.</h1>
-            </div>
-            
-            <!-- 
-            	included to demo returned error functionality
-                // possible errors:
-                wrong pass
-                user doesn't exist
-                user exists (when signing up)
-             -->
-            <div class="container cf mbot whitebg">
-				{% if form.errors %}
-                    <div class="addpad">
-                        <h1>Oops. There were some erros.</h1>
-                        {{ form.errors }}
-                    </div>
-                {% endif %}
-            </div>
-            
-            <div class="controls container mbot">
-            	<div class="row">
-                    <div class="span3">
-						<a class="{% if not is_create %}current {% endif %}small-block-link" href="{% url 'account_login' %}">I have an account already</a>
-                    </div>
-                    <div class="span3">
-						<a class="{% if is_create %}current {% endif %}small-block-link" href="{% url 'account_create' %}">I need to signup.</a>
-                    </div>
-                </div>
-            </div>
+{% block page_title %}{% if is_create %}Create an account.{% else %}Login to your account.{% endif %}{% endblock %}
 
-			<div class="container cf mbot whitebg">
-            	<div class="row">
-					<form action="." method="post">{% csrf_token %}
-                    	<fieldset>
-                        	<div class="span12">
-                            	<div class="addpad">
-	                            	<h1>Enter your information</h1>
-									{% if is_create %}
-									<label>{{ form.first_name.label }}</label>
-									{{ form.first_name }}
-									{% endif %}
-									<label>{{ form.username.label }}</label>
-									{{ form.username }}
-									<label>{{ form.password.label }}</label>
-									{{ form.password }}
-                                </div>
-                            </div>
-                            <div class="span3">
-                            	<div class="addpad">
-	                                <button class="small-block-link" href="#">Get in the system</button>
-                                </div>
-                            </div>
-                        </fieldset>
-                    </form>
-                </div>
-            </div>
+{% block content %}
+<div id="login" class="cf page">
 
-            <div class="paginate container mbot">
-            	<div class="row">
-                    <div class="span3 pull-left">
-                        <a class="small-block-link" href="#">I forgot my password.</a>
-                    </div>
-                </div>
-            </div>
-            
-        <footer id="footer">
-        	
-        </footer>
+	<div class="container cf mbot">
+		<h1 class="title"></h1>
+	</div>
+	
+	<!-- 
+		included to demo returned error functionality
+		// possible errors:
+		wrong pass
+		user doesn't exist
+		user exists (when signing up)
+	 -->
+	<div class="container cf mbot whitebg">
+		{% if form.errors %}
+			<div class="addpad">
+				<h1>Oops. There were some erros.</h1>
+				{{ form.errors }}
+			</div>
+		{% endif %}
+	</div>
+	
+	<div class="controls container mbot">
+		<div class="row">
+			<div class="span3">
+				<a class="{% if not is_create %}current {% endif %}small-block-link" href="{% url 'account_login' %}">I have an account already</a>
+			</div>
+			<div class="span3">
+				<a class="{% if is_create %}current {% endif %}small-block-link" href="{% url 'account_create' %}">I need to signup.</a>
+			</div>
+		</div>
+	</div>
 
-        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-        
-        <!--
-        <script>window.jQuery || document.write('<script src="js/vendor/jquery-1.9.1.min.js"><\/script>')</script>
-        -->
+	<div class="container cf mbot whitebg">
+		<div class="row">
+			<form action="." method="post">{% csrf_token %}
+				<fieldset>
+					<div class="span12">
+						<div class="addpad">
+							<h1>Enter your information</h1>
+							{% if is_create %}
+							<label>{{ form.first_name.label }}</label>
+							{{ form.first_name }}
+							{% endif %}
+							<label>{{ form.username.label }}</label>
+							{{ form.username }}
+							<label>{{ form.password.label }}</label>
+							{{ form.password }}
+						</div>
+					</div>
+					<div class="span3">
+						<div class="addpad">
+							<button class="small-block-link" href="#">Get in the system</button>
+						</div>
+					</div>
+				</fieldset>
+			</form>
+		</div>
+	</div>
 
-        <!--
-        <script src="js/plugins.js"></script>
-        -->
-		<script src="{{ STATIC_URL }}js/script.js"></script>
-		<!--
-        <script>
-            var _gaq=[['_setAccount','UA-XXXXX-X'],['_trackPageview']];
-            (function(d,t){var g=d.createElement(t),s=d.getElementsByTagName(t)[0];
-            g.src=('https:'==location.protocol?'//ssl':'//www')+'.google-analytics.com/ga.js';
-            s.parentNode.insertBefore(g,s)}(document,'script'));
-        </script>
-        -->
-    </body>
-    
-</html>
+	<div class="paginate container mbot">
+		<div class="row">
+			<div class="span3 pull-left">
+				<a class="small-block-link" href="#">I forgot my password.</a>
+			</div>
+		</div>
+	</div>
+{% endblock %}
+
+{% block extra_script %}
+<script src="{{ STATIC_URL }}js/script.js"></script>
+{% endblock %}
