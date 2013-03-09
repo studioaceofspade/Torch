@@ -1,4 +1,8 @@
-from django.contrib.auth import authenticate, login as django_login
+from django.contrib.auth import (
+    authenticate,
+    login as django_login,
+    logout as django_logout,
+)
 from django.template import RequestContext
 from django.contrib.auth.forms import AuthenticationForm
 from django.shortcuts import redirect, render_to_response
@@ -34,3 +38,8 @@ def account(request, is_create):
         'account/create.html',
         context_instance=context,
     )
+
+
+def logout(request):
+    django_logout(request)
+    return redirect('account_login')
