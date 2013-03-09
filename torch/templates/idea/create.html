@@ -81,13 +81,22 @@
                             <div class="row">
                                 <div class="paginate">
 									{% include "idea/include/slide_back.html" %}
+									{% if not user.is_authenticated %}
 									{% include "idea/include/slide_next.html" %}
+									{% else %}
+									<div class="span3 pull-right slide-next">
+										<div class="addpad">
+											<button class="small-block-link">Submit your idea!</button>
+										</div>
+									</div>
+									{% endif %}
                                 </div>
                             </div>
                             
                         </div>
                     </div>
                     
+					{% if not user.is_authenticated %}
                    	<!-- account creation -->
                     <div class="slide">
                     	<div class="container whitebg">
@@ -129,6 +138,7 @@
 							</div>
                         </div>
                     </div>
+					{% endif %}
                     
                 	<!-- error/success panel -->
                     <div class="slide">

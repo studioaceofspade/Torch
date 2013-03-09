@@ -1,5 +1,4 @@
 from django.conf import settings
-from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.shortcuts import redirect, render_to_response, get_object_or_404
 from django.template import RequestContext
@@ -8,7 +7,6 @@ from torch.idea.forms import make_IdeaForm
 from torch.idea.models import Idea, order_by_popular
 
 
-@login_required
 def create(request):
     IdeaForm = make_IdeaForm(request.user)
     if request.method == 'POST':
