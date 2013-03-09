@@ -1,4 +1,159 @@
-<form action="." method="post">{% csrf_token %}
-	{{ form }}
-	<input type="submit" />
-</form>
+{% extends "base.html" %}
+
+{% block page_title %}Tell us your idea! Help grow your community.{% endblock %}
+
+{% block content %}
+        <div id="submit" class="cf page">
+	                  
+            <div class="container cf mbot">
+	            <h1 class="title"></h1>
+            </div>
+            
+            <!-- main messaging and ctas -->
+            <div class="cf mbot">
+                <div class="slideshow mbot">
+                	<!-- title -->
+                    <div class="slide">
+                    	<div class="container whitebg">
+                            <div class="row">
+                                <div class="span12">
+                                    <div class="addpad">
+										<h1>{{ form.title.label }}</h1>
+										{{ form.title }}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="paginate">
+									{% include "idea/include/slide_next.html" %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                	<!-- describe idea -->
+                    <div class="slide">
+                    	<div class="container whitebg">
+                            <div class="row">
+                                <div class="span12">
+                                    <div class="addpad">
+										<h1>{{ form.description.label }}</h1>
+										{{ form.description }}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="paginate">
+									{% include "idea/include/slide_back.html" %}
+									{% include "idea/include/slide_next.html" %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                	<!-- tag it -->
+                    <div class="slide tag">
+                    	<div class="container whitebg">
+                        	<div class="row">
+                            	<div class="span12">
+                                	<div class="slide-head">
+                                    	<h1>Tag your idea!</h1>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="span3">
+                                    <div class="addpad">
+                                        <a class="small-block-link current" href="#">Innovation</a>
+                                    </div>
+                                </div>
+                                <div class="span3">
+                                    <div class="addpad">
+                                        <a href="#" class="small-block-link">Creativity</a>
+                                    </div>
+                                </div>
+                                <div class="span3">
+                                    <div class="addpad">
+                                        <a href="#" class="small-block-link">Entrepreneueship</a>
+                                    </div>
+                                </div>
+							</div>
+                            <div class="row">
+                                <div class="paginate">
+									{% include "idea/include/slide_back.html" %}
+									{% include "idea/include/slide_next.html" %}
+                                </div>
+                            </div>
+                            
+                        </div>
+                    </div>
+                    
+                   	<!-- account creation -->
+                    <div class="slide">
+                    	<div class="container whitebg">
+                            <div class="row">
+                                <div class="span12">
+                                	<div class="slide-head">
+	                                	<h1>Enter your information</h1>
+                                    </div>
+                                    <div class="row">
+                                        <div class="span3 slide-spacer">
+                                            <a class="current small-block-link" href="#">I have an account already</a>
+                                        </div>
+                                        <div class="span3">
+                                            <a href="#" class="small-block-link">I need to signup.</a>
+                                        </div>
+                                        <div class="span3 pull-left">
+                                            <a class="small-block-link" href="#" target="_blank">I forgot my password.</a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="span12">
+                                    <form class="slide-spacer">
+                                        <fieldset>              
+                                            <label>Your Name</label>
+                                            <input class="slide-login" type="text" placeholder="What shall we call you?">
+                                            <label>Email address</label>
+                                            <input class="slide-login" type="text" placeholder="yourname@example.com">
+                                            <label>Password</label>
+                                            <input class="slide-login" type="password">
+											<div class="span3 kill-margin pull-left slide-back">
+	                                            <a class="small-block-link back" href="#">I need to go back and change something.</a>
+                                            </div>
+                                            <div class="span3 pull-right slide-next">
+	                                            <button class="small-block-link">Submit your idea!</button>
+                                            </div>
+                                        </fieldset>
+                                    </form>
+                                </div>
+							</div>
+                        </div>
+                    </div>
+                    
+                	<!-- error/success panel -->
+                    <div class="slide">
+                    	<div class="container whitebg">
+                            <div class="row">
+                                <div class="span12">
+                                    <div class="slide-head">
+                                        <h1>Thanks!</h1>
+                                    </div>
+                                    <div class="mbot addpad">
+                                        <p>Your idea looks awesome! Share it with your friends!</p>
+                                        <a href="#">thepermalink</a>
+                                        <p></p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+{% endblock %}
+
+{% block extra_script %}
+<script src="{{ STATIC_URL }}js/script.js"></script>
+<script src="{{ STATIC_URL }}js/cycle.js"></script>
+{% endblock %}
