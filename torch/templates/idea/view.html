@@ -11,9 +11,7 @@
 			<div class="idea-tag orange"><span>tagged with {{ idea.get_tag_display|lower }}</span></div>
 			<div class="span2">
 				<div class="addpad">
-					<span class="tally">{{ idea.num_votes }}</span>
-					<a class="small-block-link" href="#">like this idea</a>
-					<a class="small-block-link" href="#">more info</a>
+					{% include "idea/include/tally_cell.html" %}
 				</div>
 			</div>
 			<div class="span10">

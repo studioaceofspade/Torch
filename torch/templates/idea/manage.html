@@ -47,9 +47,7 @@
 						{% for idea in ideas %}
 						<tr class="idea-data">
 							<td>
-								<span class="tally">{{ idea.num_votes }}</span>
-								<a class="small-block-link" href="#">like this idea</a>
-								<a class="small-block-link" href="#">more info</a>
+							{% include "idea/include/tally_cell.html" %}
 							</td>
 							<td>
 								<h3>{{ idea.title }}</h3>

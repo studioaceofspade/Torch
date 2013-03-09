@@ -46,15 +46,15 @@ def view(request, idea_id):
 def manage(request):
     idea_qs = Idea.objects.all().select_related()
     sort = request.GET.get('sort')
-    available_sorts = (
-        'num_votes',
-        'popular',
-    )
+    available_sorts = {
+        'num_votes': '-num_votes',
+        'popular': '',
+    }
     if sort and sort in available_sorts:
         if sort == 'popular':
             idea_qs = order_by_popular(idea_qs)
         else:
-            idea_qs = idea_qs.order_by(sort)
+            idea_qs = idea_qs.order_by(available_sorts[sort])
     paginator = Paginator(idea_qs, settings.TORCH_PAGINATION)
 
     page = request.GET.get('page')
