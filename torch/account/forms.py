@@ -21,6 +21,11 @@ class UserForm(forms.ModelForm):
             'placeholder': 'What shall we call you?',
         }),
     )
+    password = forms.CharField(
+        label='Password',
+        required=True,
+        widget=forms.PasswordInput(attrs={'autocompleate': 'off'}),
+    )
 
     def clean_username(self):
         username = self.cleaned_data['username']
