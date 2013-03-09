@@ -6,10 +6,17 @@ from django.shortcuts import redirect, render_to_response
 from torch.account.forms import UserForm
 
 
-def login(request):
+def account(request, is_create):
+    if is_create:
+        Form = UserForm
+    else:
+        Form = AuthenticationForm
     if request.method == 'POST':
-        form = AuthenticationForm(data=request.POST)
+        # Stupid AuthenticationForm
+        form = Form(data=request.POST)
         if form.is_valid():
+            if is_create:
+                form.save()
             username = request.POST.get('username')
             password = request.POST.get('password')
             user = authenticate(username=username, password=password)
@@ -17,30 +24,11 @@ def login(request):
                 django_login(request, user)
             return redirect('idea_create')
     else:
-        form = AuthenticationForm()
-    context = RequestContext(request)
-    data = {
-        'form': form,
-    }
-
-    return render_to_response(
-        'account/login.html',
-        data,
-        context_instance=context,
-    )
-
-
-def create(request):
-    if request.method == 'POST':
-        form = UserForm(request.POST)
-        if form.is_valid():
-            form.save()
-            return redirect('account_login')
-    else:
         form = UserForm()
     context = RequestContext(request)
     data = {
         'form': form,
+        'is_create': is_create,
     }
 
     return render_to_response(

@@ -60,10 +60,10 @@
             <div class="controls container mbot">
             	<div class="row">
                     <div class="span3">
-                      <a class="current small-block-link" href="{% url 'account_login' %}">I have an account already</a>
+						<a class="{% if not is_create %}current {% endif %}small-block-link" href="{% url 'account_login' %}">I have an account already</a>
                     </div>
                     <div class="span3">
-                      <a href="{% url 'account_create' %}" class="small-block-link">I need to signup.</a>
+						<a class="{% if is_create %}current {% endif %}small-block-link" href="{% url 'account_create' %}">I need to signup.</a>
                     </div>
                 </div>
             </div>
@@ -75,8 +75,10 @@
                         	<div class="span12">
                             	<div class="addpad">
 	                            	<h1>Enter your information</h1>
+									{% if is_create %}
 									<label>{{ form.first_name.label }}</label>
 									{{ form.first_name }}
+									{% endif %}
 									<label>{{ form.username.label }}</label>
 									{{ form.username }}
 									<label>{{ form.password.label }}</label>
