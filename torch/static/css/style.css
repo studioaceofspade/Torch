@@ -1,0 +1,264 @@
+@charset "utf-8";
+
+/* Base Resets ====================== 
+================================== */
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed, 
+figure, figcaption, footer, header, hgroup, 
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	vertical-align: baseline;}
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure, 
+footer, header, hgroup, menu, nav, section {
+	display: block;}
+body {
+	line-height: 1;}
+ol, ul {
+	list-style: none;}
+blockquote, q {
+	quotes: none;}
+blockquote:before, blockquote:after,
+q:before, q:after {
+	content: '';
+	content: none;}
+table {
+	border-collapse: collapse;
+	border-spacing: 0;}
+.cf:before,
+.cf:after {
+    content: " ";
+    display: table;}
+.cf:after {
+    clear: both;}
+.cf {
+    *zoom: 1;}
+body {
+  background: url(../img/background.jpg) no-repeat center center fixed; 
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;}
+p {
+	line-height: 26px;
+	font-size: 16px;}
+p + p {
+	padding-top: 20px;}
+
+/* Utility classes=================== 
+================================== */
+.title {
+	color: #fff;
+	text-shadow: 0px 1px 0px #000;
+	filter: dropshadow(color=#000, offx=0, offy=1);
+	font-size: 38px;
+	text-align: center;}
+.mbot {
+	margin-bottom: 40px;}
+.addpad {
+	padding: 20px;}
+.addpad h1 {
+	margin-bottom: 15px;}
+.orange {
+	background: #f08d26;
+	color: #fff;}
+.orange a,
+a.orange {
+	color: #fff;}
+.whitebg {
+	background: #fff;}  
+.block-link,
+.small-block-link {
+	display: block;
+	width: 95%;
+	padding: 2.5%;
+	background: #f08d26;
+	color: #fff;
+	margin-bottom: 10px;
+	text-align: center;
+	font-weight: 300;
+	font-size: 22px;}
+.block-link:hover,
+.small-block-link:hover {
+	text-decoration: none;
+	color: #fff;
+	background: #cc7112;}
+.small-block-link {
+	font-size: 14px;
+	line-height: 14px;}
+button.small-block-link {
+	border: 0;}
+.arr-link {
+	height: 17px;
+	width: 17px;
+	display: block;
+	background: url(../img/arr-link.png);}
+.arr-link:hover {
+	text-decoration: none;}
+	
+/* Header =========================== 
+================================== */
+#header {
+	margin-top: 40px;
+	background: #fff;
+	padding: 0 2%;}
+#header .brand {
+	background: #f08d26;
+	padding: 10px;
+	max-height: 65px;
+	overflow: hidden;}
+#header .brand img {
+	padding-bottom: 4px;
+	display: block;}
+#header .main-nav ul li {
+	float: left;
+	padding: 10px;
+	font-weight: 300;
+	max-height: 65px;
+	overflow: hidden;}
+#header .main-nav ul li a {
+	color: #000;
+	font-size: 23px;
+	display: block;
+	padding: 12px 12px 13px;
+	text-decoration: none;}
+#header .main-nav ul li:hover {
+	background: #f08d26;}
+#header .main-nav ul li:hover a {
+	color: #fff;}
+#header .main-nav ul li.orange a {
+	color: #fff;}
+#header .main-nav ul li.orange:hover {
+	background: #cc7112;}
+
+/* Home Page========================= 
+================================== */
+.sect-head {
+	position: relative;
+	border-bottom: 1px solid #f08d26;
+	margin-bottom: 10px;}
+.sect-head h1,
+.idea-tag {
+	display: block;
+	float: left;
+	font-size: 18px;
+	line-height: 18px;
+	width: 170px;
+	padding: 10px 0;
+	text-align: center;}
+.sect-head h2 {
+	display: block;
+	float: left;
+	color: #ddd;
+	font-size: 18px;
+	line-height: 18px;
+	padding: 10px;}
+.sect-head .arr-link,
+.idea-tag {
+	position: absolute;
+	right: 10px;
+	top: 10px;}
+.idea-tag {
+	right: 0;
+	top: 0;
+	font-weight: 300;
+	font-size: 14px;
+	line-height: 14px;}
+.full-idea {
+	position: relative;}
+.tally {
+	width: 100%;
+	text-align: center;
+	display: block;
+	font-weight: 600;
+	font-size: 46px;
+	line-height: 46px;
+	padding-bottom: 10px;}
+.small-idea {
+	padding-bottom: 4px;
+	border-bottom: 1px solid #ddd;
+	margin-bottom: 4px;}
+.idea-info {
+	position: relative;}
+.idea-info h3,
+.ideas h3,
+.ideas .date p {
+	font-weight: 600;
+	font-size: 22px;
+	line-height: 24px;}
+.submit-info {
+	position: absolute;
+	bottom: 10px;
+	left: 0;
+	right: 0;}
+.submit-info p {
+	color: #ddd;
+	font-size: 14px;
+	line-height: 14px;}
+.small-idea:last-child {
+	border: 0;}
+	
+/* Ideas Page ======================= 
+================================== */
+.small-block-link.current {
+	background: #cc7112;
+	border-bottom: 3px solid #fff;
+	border-top: 3px solid #fff;
+	margin-top: -3px;}
+
+/* Submission Page ==================
+================================== */
+.slide {
+	width: 100%;}
+.slide input,
+.slide textarea {
+	width: 96%;
+	border-radius: 0;
+	padding: 10px 1%;
+	border: 0;
+	font-size: 22px;
+	line-height: 28px;
+	font-weight: 300;
+	-webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.7);
+	-moz-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+	box-shadow: inset 0px 0px 4px rgba(0, 0, 0, 0.2);}
+.slideshow {
+	margin-left: auto;
+	margin-right: auto;}
+.slide-head,
+.sub-head {
+	padding-top: 20px;
+	padding-left: 20px;
+	padding-bottom: 10px;}
+.sub-head {
+	padding-left: 0;
+	display: block;}
+.slide-spacer {
+	padding-left: 20px;}
+.slide input.slide-login,
+.account-settings input {
+	width: 50%;
+	display: block;}
+.kill-margin {
+	margin: 0 !important;}
+.small-block-link.back {
+	background: #999;}
+.slide .small-block-link.current {
+	border-top: 3px #ccc solid;
+	border-bottom: 3px #ccc solid;
+	margin-top: -3px;}
+.float-fix {
+	float: left;
+	clear: both;
+	width: 100%;}

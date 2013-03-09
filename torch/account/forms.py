@@ -4,24 +4,22 @@ from django import forms
 
 class UserForm(forms.ModelForm):
     username = forms.CharField(
-        required=False,
+        label='Email Address',
+        required=True,
         max_length=130,
-        widget=forms.TextInput(attrs={'autocompleate': 'off'}),
-    )
-    password1 = forms.CharField(
-        label='Password',
-        widget=forms.PasswordInput(attrs={'autocompleate': 'off'}),
-        required=True,
-    )
-    password2 = forms.CharField(
-        label='Verify Password',
-        required=True,
-        widget=forms.PasswordInput(attrs={'autocompleate': 'off'}),
+        widget=forms.TextInput(attrs={
+            'autocompleate': 'off',
+            'placeholder': 'yourname@example.com',
+        }),
     )
     first_name = forms.CharField(
-        label='First Name',
+        label='Your Name',
         max_length=30,
         required=True,
+        widget=forms.TextInput(attrs={
+            'autocompleate': 'off',
+            'placeholder': 'What shall we call you?',
+        }),
     )
 
     def clean_username(self):
@@ -30,23 +28,13 @@ class UserForm(forms.ModelForm):
 
         if User.objects.filter(username=username).exists():
             raise forms.ValidationError(
-                'This username is already taken. Please choose another.',
+                'This email is already taken. Please choose another.',
             )
 
         return username
 
-    def clean_password2(self):
-        password1 = self.cleaned_data['password1']
-        password2 = self.cleaned_data['password2']
-        if (password1 or password2):
-            if password1 != password2:
-                raise forms.ValidationError('The passwords must match.')
-        elif not self.instance.pk:
-            raise forms.ValidationError('You must supply a password.')
-        return password2
-
     def save(self, *args, **kwargs):
-        password = self.cleaned_data['password1']
+        password = self.cleaned_data['password']
         if password:
             self.instance.set_password(password)
 
@@ -57,4 +45,5 @@ class UserForm(forms.ModelForm):
         fields = (
             'username',
             'first_name',
+            'password',
         )
