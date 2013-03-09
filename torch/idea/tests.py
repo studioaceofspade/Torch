@@ -134,3 +134,23 @@ class IdeaClientTestCase(TestCase):
         self.assertEqual(idea.title, 'title')
         self.assertEqual(idea.description, 'description')
         self.assertEqual(idea.author, self.user)
+
+    def test_view_idea(self):
+        c = self.client
+
+        TITLE = 'Title of the idea'
+        DESCRIPTION = 'Description of the idea'
+        idea = create_idea(
+            user=self.user,
+            title=TITLE,
+            description=DESCRIPTION,
+            tag=CREATIVITY,
+        )
+
+        view_idea = reverse('idea_view', kwargs={'idea_id': idea.pk})
+        with self.assertNumQueries(2):
+            r = c.get(view_idea)
+
+        self.assertContains(r, TITLE)
+        self.assertContains(r, DESCRIPTION)
+        self.assertContains(r, idea.get_tag_display().lower())

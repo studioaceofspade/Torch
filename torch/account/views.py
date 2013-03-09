@@ -25,14 +25,12 @@ def account(request, is_create):
             return redirect('idea_create')
     else:
         form = UserForm()
-    context = RequestContext(request)
-    data = {
+    context = RequestContext(request, {
         'form': form,
         'is_create': is_create,
-    }
+    })
 
     return render_to_response(
         'account/create.html',
-        data,
         context_instance=context,
     )
