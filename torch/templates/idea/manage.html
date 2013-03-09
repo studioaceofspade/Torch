@@ -1,0 +1,86 @@
+{% extends "base.html" %}
+
+{% block header %}Amazing ideas coming from those in your community.{% endblock %}
+
+{% block content %}
+<div id="about" class="cf page">
+
+	<div class="container cf mbot">
+		<h1 class="title"></h1>
+	</div>
+	
+	<div class="controls container mbot">
+		<div class="row">
+			<div class="span3">
+				<a href="{% url 'idea_manage' %}" class="{% if not sort %}current {% endif %}small-block-link">Most Recent</a>
+			</div>
+			<div class="span3">
+				<a href="?sort=num_votes" class="{% if sort == 'num_votes' %}current {% endif %}small-block-link">Most Liked</a>
+			</div>
+			<div class="span3">
+				<a href="?sort=popular" class="{% if sort == 'popular' %}current {% endif %}small-block-link">Most Popular</a>
+			</div>
+			<div class="span3">
+				<a href="{% url 'idea_create' %}" class="small-block-link">Submit your idea</a>
+			</div>
+		</div>
+	</div>
+	
+	<!-- main messaging and ctas -->
+	<div class="container cf mbot whitebg">
+		<div class="row">
+			<div class="span12">
+				<table class="table ideas">
+					<colgroup>
+						<col span="1" style="width: 15%;">
+						<col span="1" style="width: 70%;">
+						<col span="1" style="width: 15%;">
+					</colgroup>
+					<thead>
+						<tr>
+							<th>Likes</th>
+							<th>The Idea</th>
+							<th>Date Posted</th>
+						</tr>
+					</thead>
+					<tbody>
+						{% for idea in ideas %}
+						<tr class="idea-data">
+							<td>
+							{% include "idea/include/tally_cell.html" %}
+							</td>
+							<td>
+								<h3>{{ idea.title }}</h3>
+								<p>{{ idea.description }}</p>
+								<p>Submitted by {{ idea.author }} in {{ idea.get_tag_display }}</p>
+							</td>
+							<td class="date"><p>{{ idea.created }}</p></td>
+						</tr>
+						{% endfor %}
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+
+	{% if ideas.has_other_pages %}
+	<div class="paginate container mbot">
+		<div class="row">
+			{% if ideas.has_previous %}
+			<div class="span3 pull-left">
+				<a href="?page={{ ideas.previous_page_number }}" class="small-block-link">Previous</a>
+			</div>
+			{% endif %}
+			{% if ideas.has_next %}
+			<div class="span3 pull-right">
+				<a href="?page={{ ideas.next_page_number }}" class="small-block-link">Next</a>
+			</div>
+			{% endif %}
+		</div>
+	</div>
+	{% endif %}
+{% endblock %}
+
+{% block extra_script %}
+<script src="{{ STATIC_URL }}js/script.js"></script>
+{% endblock %}

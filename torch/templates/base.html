@@ -27,10 +27,15 @@
             <nav class="pull-right main-nav">
             	<ul>
                 	<li><a href="#">about</a></li>
-                    <li><a href="#">ideas</a></li>
+					<li><a href="{% url 'idea_manage' %}">ideas</a></li>
                     <li><a href="#">contact</a></li>
-                    <li><a href="#">login</a></li>
-                    <li class="orange"><a href="#">submit your ideas!</a></li>
+					{% if user.is_authenticated %}
+					<li><a href="{% url 'account_login' %}">my account</a></li>
+					<li><a href="{% url 'account_logout' %}">logout</a></li>
+					{% else %}
+					<li><a href="{% url 'account_login' %}">login</a></li>
+					{% endif %}
+					<li class="orange"><a href="{% url 'idea_create' %}">submit your ideas!</a></li>
                 </ul>
             </nav>
         </header>

@@ -1,3 +1,6 @@
+import sys
+from datetime import datetime
+
 from django.db import models
 from django.contrib.auth.models import User
 
@@ -17,6 +20,16 @@ TAG_CHOICES = (
     (ENTREPRENEURSHIP, 'Entrepreneurship'),
     (INNOVATION, 'Innovation'),
 )
+
+
+class IdeaManager(models.Manager):
+    def get_query_set(self):
+        return super(
+            IdeaManager,
+            self,
+        ).get_query_set().annotate(
+            num_votes=models.Count('votes'),
+        )
 
 
 class Idea(models.Model):
@@ -39,6 +52,11 @@ class Idea(models.Model):
     created = CreationDateTimeField(null=True)
     modified = ModificationDateTimeField(null=True)
 
+    objects = IdeaManager()
+
+    class Meta:
+        ordering = ['-created']
+
 
 def create_idea(user, title, description, tag):
     """
@@ -51,3 +69,22 @@ def create_idea(user, title, description, tag):
         description=description,
         tag=tag,
     )
+
+
+def order_by_popular(qs):
+    """
+    Return an list ordered by popularity.
+
+    Popularity is defined by number of votes per hour.
+    """
+    now = datetime.now()
+
+    def _key(idea):
+        if idea.num_votes == 0:
+            return sys.maxint
+        diff = now - idea.created
+        days = diff.days
+        hours = diff.seconds / 3600
+        hours += days * 24
+        return hours / idea.num_votes
+    return sorted(qs, key=_key)

@@ -14,4 +14,5 @@ urlpatterns = patterns(
         kwargs={'is_create': True},
         name='account_create',
     ),
+    url('^logout/$', 'logout', name='account_logout')
 )

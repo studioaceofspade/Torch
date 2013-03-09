@@ -19,7 +19,7 @@ class AccountFormTestCase(TestCase):
 
     def test_valid(self):
         params = {
-            'username': 'username',
+            'username': 'username@example.com',
             'password': 'pw',
             'first_name': 'first_name',
         }
@@ -28,7 +28,8 @@ class AccountFormTestCase(TestCase):
         assert is_valid
 
         user = form.save()
-        self.assertEqual(user.username, 'username')
+        self.assertEqual(user.username, 'username@example.com')
+        self.assertEqual(user.email, 'username@example.com')
         self.assertEqual(user.first_name, 'first_name')
         assert user.check_password('pw')
 
@@ -39,7 +40,7 @@ class AccountClientTestCase(TestCase):
 
         create_user = reverse('account_create')
         params = {
-            'username': 'username',
+            'username': 'username@example.com',
             'password': 'pw',
             'first_name': 'first_name',
         }
@@ -47,7 +48,8 @@ class AccountClientTestCase(TestCase):
         self.assertEqual(r.status_code, 302)
 
         user = User.objects.get()
-        self.assertEqual(user.username, 'username')
+        self.assertEqual(user.username, 'username@example.com')
+        self.assertEqual(user.email, 'username@example.com')
         self.assertEqual(user.first_name, 'first_name')
         assert user.check_password('pw')
 
@@ -74,3 +76,42 @@ class AccountClientTestCase(TestCase):
         # And now it works
         r = c.get(create_idea)
         self.assertEqual(r.status_code, 200)
+
+    def test_login_login_my_account(self):
+        c = self.client
+
+        account_login = reverse('account_login')
+        r = c.get(account_login)
+
+        self.assertNotContains(r, 'my account')
+        self.assertNotContains(r, 'logout')
+        self.assertContains(r, '>login<')
+
+        # Login and try again.
+        User.objects.create_user('user', password='pw')
+        params = {
+            'username': 'user',
+            'password': 'pw',
+        }
+        r = c.post(account_login, params)
+        self.assertEqual(r.status_code, 302)
+
+        r = c.get(account_login)
+        self.assertContains(r, 'my account')
+        self.assertContains(r, 'logout')
+        self.assertNotContains(r, '>login<')
+
+    def test_logout(self):
+        c = self.client
+
+        account_logout = reverse('account_logout')
+        account_login = reverse('account_login')
+
+        User.objects.create_user('user', password='pw')
+        assert c.login(username='user', password='pw')
+
+        r = c.get(account_logout)
+        self.assertRedirects(r, account_login)
+
+        r = c.get(account_login)
+        self.assertNotContains(r, 'my account')

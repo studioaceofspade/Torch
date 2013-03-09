@@ -3,7 +3,7 @@ from django import forms
 
 
 class UserForm(forms.ModelForm):
-    username = forms.CharField(
+    username = forms.EmailField(
         label='Email Address',
         required=True,
         max_length=130,
@@ -42,6 +42,9 @@ class UserForm(forms.ModelForm):
         password = self.cleaned_data['password']
         if password:
             self.instance.set_password(password)
+        email = self.cleaned_data['username']
+        if email:
+            self.instance.email = email
 
         return super(UserForm, self).save(*args, **kwargs)
 
