@@ -1,8 +1,9 @@
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import redirect, render_to_response
+from django.shortcuts import redirect, render_to_response, get_object_or_404
 from django.template import RequestContext
 
 from torch.idea.forms import make_IdeaForm
+from torch.idea.models import Idea
 
 
 @login_required
@@ -22,6 +23,23 @@ def create(request):
 
     return render_to_response(
         'idea/create.html',
+        data,
+        context_instance=context,
+    )
+
+
+def view(request, idea_id):
+    idea = get_object_or_404(
+        Idea.objects.select_related(),
+        pk=idea_id,
+    )
+    context = RequestContext(request)
+    data = {
+        'idea': idea,
+    }
+
+    return render_to_response(
+        'idea/view.html',
         data,
         context_instance=context,
     )

@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% block page_title %}{{ idea.title }}{% endblock %}
+
+{% block content %}
+        <div id="about" class="cf page">
+        
+            <!-- main messaging and ctas -->
+            <div class="container cf mbot whitebg full-idea">
+            	<div class="row">
+					<div class="idea-tag orange"><span>tagged with {{ idea.get_tag_display|lower }}</span></div>
+                    <div class="span2">
+                    	<div class="addpad">
+							<span class="tally">{{ idea.votes.count }}</span>
+                            <a class="small-block-link" href="#">like this idea</a>
+                            <a class="small-block-link" href="#">more info</a>
+                        </div>
+                    </div>
+                    <div class="span10">
+                    	<div class="addpad">
+							<h1>Why this is a good idea</h1>
+							<p>{{ idea.description }}</p>
+						</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+{% endblock %}
+
+{% block extra_script %}
+<script src="{{ STATIC_URL }}js/script.js"></script>
+{% endblock %}
