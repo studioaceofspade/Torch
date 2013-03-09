@@ -19,7 +19,7 @@ class AccountFormTestCase(TestCase):
 
     def test_valid(self):
         params = {
-            'username': 'username',
+            'username': 'username@example.com',
             'password': 'pw',
             'first_name': 'first_name',
         }
@@ -28,7 +28,8 @@ class AccountFormTestCase(TestCase):
         assert is_valid
 
         user = form.save()
-        self.assertEqual(user.username, 'username')
+        self.assertEqual(user.username, 'username@example.com')
+        self.assertEqual(user.email, 'username@example.com')
         self.assertEqual(user.first_name, 'first_name')
         assert user.check_password('pw')
 
@@ -39,7 +40,7 @@ class AccountClientTestCase(TestCase):
 
         create_user = reverse('account_create')
         params = {
-            'username': 'username',
+            'username': 'username@example.com',
             'password': 'pw',
             'first_name': 'first_name',
         }
@@ -47,7 +48,8 @@ class AccountClientTestCase(TestCase):
         self.assertEqual(r.status_code, 302)
 
         user = User.objects.get()
-        self.assertEqual(user.username, 'username')
+        self.assertEqual(user.username, 'username@example.com')
+        self.assertEqual(user.email, 'username@example.com')
         self.assertEqual(user.first_name, 'first_name')
         assert user.check_password('pw')
 
