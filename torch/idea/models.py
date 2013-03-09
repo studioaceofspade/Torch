@@ -9,16 +9,14 @@ from django_extensions.db.fields import (
     ModificationDateTimeField,
 )
 
-CREATIVITY = 0
-DOWNTOWN_AREAS = 1
+INNOVATION = 0
+CREATIVITY = 1
 ENTREPRENEURSHIP = 2
-INNOVATION = 3
 
 TAG_CHOICES = (
-    (CREATIVITY, 'Creativity'),
-    (DOWNTOWN_AREAS, 'Downtown Areas'),
-    (ENTREPRENEURSHIP, 'Entrepreneurship'),
     (INNOVATION, 'Innovation'),
+    (CREATIVITY, 'Creativity'),
+    (ENTREPRENEURSHIP, 'Entrepreneurship'),
 )
 
 

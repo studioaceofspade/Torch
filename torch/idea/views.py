@@ -1,7 +1,10 @@
 from django.conf import settings
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-from django.shortcuts import redirect, render_to_response, get_object_or_404
+from django.http import HttpResponse
+from django.shortcuts import render_to_response, get_object_or_404
 from django.template import RequestContext
+from django.core.urlresolvers import reverse
+from django.utils.simplejson import loads
 
 from torch.idea.forms import make_IdeaForm
 from torch.idea.models import Idea, order_by_popular
@@ -12,8 +15,14 @@ def create(request):
     if request.method == 'POST':
         form = IdeaForm(request.POST)
         if form.is_valid():
-            form.save()
-        return redirect('home')
+            idea = form.save()
+            url = str(reverse('idea_view', kwargs={'idea_id': idea.pk}))
+            return HttpResponse(
+                loads(
+                    {'url': url},
+                ),
+                mimetype="application/json",
+            )
     else:
         form = IdeaForm()
     context = RequestContext(request, {

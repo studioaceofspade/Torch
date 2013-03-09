@@ -8,12 +8,20 @@
             <div class="container cf mbot">
 	            <h1 class="title"></h1>
             </div>
+			<div class="container cf mbot whitebg">
+				{% if form.errors %}
+					<div class="addpad">
+						<h1>Oops. There were some erros.</h1>
+						{{ form.errors }}
+					</div>
+				{% endif %}
+			</div>
             
             <!-- main messaging and ctas -->
             <div class="cf mbot">
                 <div class="slideshow mbot">
                 	<!-- title -->
-                    <div class="slide">
+                    <div class="slide title-input">
                     	<div class="container whitebg">
                             <div class="row">
                                 <div class="span12">
@@ -32,7 +40,7 @@
                     </div>
                     
                 	<!-- describe idea -->
-                    <div class="slide">
+                    <div class="slide description-input">
                     	<div class="container whitebg">
                             <div class="row">
                                 <div class="span12">
@@ -52,7 +60,7 @@
                     </div>
 
                 	<!-- tag it -->
-                    <div class="slide tag">
+                    <div class="slide tag-input">
                     	<div class="container whitebg">
                         	<div class="row">
                             	<div class="span12">
@@ -61,22 +69,16 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="row">
+                            <div class="row idea-create-tags">
+								{% for value, tag in form.fields.tag.choices %}
+								{% if forloop.counter != 1 %}
                                 <div class="span3">
                                     <div class="addpad">
-                                        <a class="small-block-link current" href="#">Innovation</a>
+										<a href="#" class="small-block-link{% if forloop.counter == 2 %} current{% endif %}" data-val="{{ value }}">{{ tag }}</a>
                                     </div>
                                 </div>
-                                <div class="span3">
-                                    <div class="addpad">
-                                        <a href="#" class="small-block-link">Creativity</a>
-                                    </div>
-                                </div>
-                                <div class="span3">
-                                    <div class="addpad">
-                                        <a href="#" class="small-block-link">Entrepreneueship</a>
-                                    </div>
-                                </div>
+								{% endif %}
+								{% endfor %}
 							</div>
                             <div class="row">
                                 <div class="paginate">
@@ -86,7 +88,7 @@
 									{% else %}
 									<div class="span3 pull-right slide-next">
 										<div class="addpad">
-											<button class="small-block-link">Submit your idea!</button>
+											<button class="small-block-link submit-your-idea">Submit your idea!</button>
 										</div>
 									</div>
 									{% endif %}
@@ -130,7 +132,7 @@
 	                                            <a class="small-block-link back" href="#">I need to go back and change something.</a>
                                             </div>
                                             <div class="span3 pull-right slide-next">
-	                                            <button class="small-block-link">Submit your idea!</button>
+	                                            <button class="small-block-link submit-your-idea">Submit your idea!</button>
                                             </div>
                                         </fieldset>
                                     </form>
@@ -161,9 +163,15 @@
             </div>
             
         </div>
+		<form action="{% url 'idea_create' %}" method="post" style="display: none" class="submit-form">{% csrf_token %}
+			{{ form.title }}
+			{{ form.description }}
+			{{ form.tag }}
+		</form>
 {% endblock %}
 
 {% block extra_script %}
 <script src="{{ STATIC_URL }}js/script.js"></script>
 <script src="{{ STATIC_URL }}js/cycle.js"></script>
+<script src="{{ STATIC_URL }}js/ideaCreate.js"></script>
 {% endblock %}
