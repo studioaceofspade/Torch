@@ -16,14 +16,12 @@ def create(request):
         return redirect('home')
     else:
         form = IdeaForm()
-    context = RequestContext(request)
-    data = {
+    context = RequestContext(request, {
         'form': form,
-    }
+    })
 
     return render_to_response(
         'idea/create.html',
-        data,
         context_instance=context,
     )
 
@@ -33,13 +31,11 @@ def view(request, idea_id):
         Idea.objects.select_related(),
         pk=idea_id,
     )
-    context = RequestContext(request)
-    data = {
+    context = RequestContext(request, {
         'idea': idea,
-    }
+    })
 
     return render_to_response(
         'idea/view.html',
-        data,
         context_instance=context,
     )
