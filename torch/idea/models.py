@@ -20,11 +20,11 @@ TAG_CHOICES = (
 
 
 class IdeaManager(models.Manager):
-    def get_queryset(self):
+    def get_query_set(self):
         return super(
             IdeaManager,
             self,
-        ).get_queryset().aggregate(
+        ).get_query_set().annotate(
             num_votes=models.Count('votes'),
         )
 
