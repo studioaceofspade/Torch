@@ -1,9 +1,12 @@
+from datetime import datetime, timedelta
+
 from django.core.urlresolvers import reverse
 from django.contrib.auth.models import User
 from django.test import TestCase
 
-from torch.idea.models import Idea, create_idea, CREATIVITY
+from torch.idea.models import Idea, create_idea, CREATIVITY, order_by_popular
 from torch.idea.forms import make_IdeaForm
+from torch.vote.models import Vote
 
 
 class IdeaTestCase(TestCase):
@@ -31,6 +34,42 @@ class IdeaTestCase(TestCase):
         self.assertEqual(idea.author, user)
         self.assertEqual(idea.title, 'test')
         self.assertEqual(idea.description, 'foobar')
+
+    def test_order_by_popular(self):
+        user = User.objects.create()
+        idea1 = Idea.objects.create(
+            author=user,
+            tag=CREATIVITY,
+        )
+        idea2 = Idea.objects.create(
+            author=user,
+            tag=CREATIVITY,
+        )
+        now = datetime.now()
+        yesterday = now - timedelta(days=1)
+        idea1.created = yesterday
+        idea1.save()
+
+        Vote.objects.create(
+            voter=user,
+            idea=idea1,
+        )
+
+        self.assertEqual(
+            order_by_popular(Idea.objects.all()),
+            [idea1, idea2],
+        )
+
+        # Now add one vote to the newer one and watch the order change.
+        Vote.objects.create(
+            voter=User.objects.create(username='1'),
+            idea=idea2,
+        )
+
+        self.assertEqual(
+            order_by_popular(Idea.objects.all()),
+            [idea2, idea1],
+        )
 
 
 class IdeaFormTestCase(TestCase):

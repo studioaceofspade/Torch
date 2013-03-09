@@ -5,7 +5,7 @@ from django.shortcuts import redirect, render_to_response, get_object_or_404
 from django.template import RequestContext
 
 from torch.idea.forms import make_IdeaForm
-from torch.idea.models import Idea
+from torch.idea.models import Idea, order_by_popular
 
 
 @login_required
@@ -52,8 +52,7 @@ def manage(request):
     )
     if sort and sort in available_sorts:
         if sort == 'popular':
-            # TODO Make this actually do something
-            pass
+            idea_qs = order_by_popular(idea_qs)
         else:
             idea_qs = idea_qs.order_by(sort)
     paginator = Paginator(idea_qs, settings.TORCH_PAGINATION)
