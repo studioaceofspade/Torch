@@ -1,5 +1,6 @@
-from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.conf import settings
 from django.contrib.auth.decorators import login_required
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.shortcuts import redirect, render_to_response, get_object_or_404
 from django.template import RequestContext
 
@@ -55,7 +56,7 @@ def manage(request):
             pass
         else:
             idea_qs = idea_qs.order_by(sort)
-    paginator = Paginator(idea_qs, 10)  # Paginate at 10
+    paginator = Paginator(idea_qs, settings.TORCH_PAGINATION)
 
     page = request.GET.get('page')
 

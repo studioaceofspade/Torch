@@ -166,3 +166,5 @@ LOGGING = {
 TEMPLATE_STRING_IF_INVALID = '*** Invalid template variable ***'
 
 DATETIME_FORMAT = 'm.d.Y'
+
+TORCH_PAGINATION = 10

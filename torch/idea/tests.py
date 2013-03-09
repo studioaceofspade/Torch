@@ -118,17 +118,18 @@ class IdeaClientTestCase(TestCase):
         self.user = User.objects.create_user('user', password='userpw')
         assert self.client.login(username='user', password='userpw')
 
-    def test_create_idea(self):
-        c = self.client
-
+    def _create_idea(self):
         create_idea = reverse('idea_create')
         params = {
             'title': 'title',
             'description': 'description',
             'tag': CREATIVITY,
         }
-        r = c.post(create_idea, params)
+        r = self.client.post(create_idea, params)
         self.assertEqual(r.status_code, 302)
+
+    def test_create_idea(self):
+        self._create_idea()
 
         idea = Idea.objects.get()
         self.assertEqual(idea.title, 'title')
@@ -154,3 +155,42 @@ class IdeaClientTestCase(TestCase):
         self.assertContains(r, TITLE)
         self.assertContains(r, DESCRIPTION)
         self.assertContains(r, idea.get_tag_display().lower())
+
+    def test_manage_pagination(self):
+        c = self.client
+
+        idea_manage = reverse('idea_manage')
+        for _ in range(3):
+            self._create_idea()
+
+        with self.settings(TORCH_PAGINATION=1):
+            r = c.get(idea_manage)
+            self.assertContains(r, '>Next<')
+            self.assertNotContains(r, '>Previous<')
+
+        with self.settings(TORCH_PAGINATION=1):
+            r = c.get(idea_manage + '?page=2')
+            self.assertContains(r, '>Next<')
+            self.assertContains(r, '>Previous<')
+
+        with self.settings(TORCH_PAGINATION=1):
+            r = c.get(idea_manage + '?page=3')
+            self.assertNotContains(r, '>Next<')
+            self.assertContains(r, '>Previous<')
+
+        # Normal pagination is set to 10
+        r = c.get(idea_manage)
+        self.assertNotContains(r, '>Next<')
+        self.assertNotContains(r, '>Previous<')
+
+    def test_idea_manage_base(self):
+        c = self.client
+
+        idea_manage = reverse('idea_manage')
+        for _ in range(3):
+            self._create_idea()
+
+        idea_manage = reverse('idea_manage')
+
+        r = c.get(idea_manage)
+        self.assertContains(r, '<tr class="idea-data"', 3)
