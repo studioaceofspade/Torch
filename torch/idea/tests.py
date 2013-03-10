@@ -1,8 +1,9 @@
 from datetime import datetime, timedelta
 
-from django.core.urlresolvers import reverse
 from django.contrib.auth.models import User
+from django.core.urlresolvers import reverse
 from django.test import TestCase
+from django.utils.simplejson import loads
 
 from torch.idea.models import Idea, create_idea, CREATIVITY, order_by_popular
 from torch.idea.forms import make_IdeaForm
@@ -165,7 +166,8 @@ class IdeaClientTestCase(TestCase):
             'tag': CREATIVITY,
         }
         r = self.client.post(create_idea, params)
-        self.assertEqual(r.status_code, 302)
+        response = loads(r.content)
+        assert 'url' in response
 
     def test_create_idea(self):
         self._create_idea()
