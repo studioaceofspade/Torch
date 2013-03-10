@@ -1,0 +1,88 @@
+{% extends "base.html" %}
+
+{% block title %}A community conversation on entrepreneurship, innovation and creativity.{% endblock %}
+
+{% block content %}
+<div id="home" class="cf page">
+	
+	<!-- main branding -->
+	<div class="container cf mbot">
+		<img src="{{ STATIC_URL }}img/horizon-brand-large.png" alt="Horizon is acommunity conversation on entrepreneurship, innovation and creativity happening in Elkhart County, Indiana">
+	</div>
+	
+	<!-- main messaging and ctas -->
+	<div class="container cf mbot whitebg">
+		<div class="row">
+			<div class="span6">
+				<div class="addpad">
+					<h1>The Mission</h1>
+					<p>Vivamus eget enim at nisl iaculis ornare a laoreet justo. Quisque nibh magna, interdum eu venenatis in, sagittis faucibus ipsum. Fusce lobortis tortor diam, ut laoreet nisl. Donec sagittis consequat ultrices. Cras ac dignissim nisi. Vivamus laoreet neque sed tellus pellentesque at venenatis metus dapibus. Nullam id enim velit.</p>
+				</div>
+			</div>
+			<div class="span6">
+				<div class="addpad">
+					<a class="block-link" href="{% url 'idea_create' %}">submit your idea</a>
+					<a class="block-link" href="{% url 'idea_manage' %}">check out some ideas</a>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<!-- 
+	voting section // missing if test
+	
+	if there are no ideas yet, replace contents of row with:
+	<div class="no-ideas">
+		<h1>Looks like there aren't any ideas posted yet!</h1>
+		<a href="#">Be the first!</a>
+	</div>            
+	-->
+	
+	<div class="container cf mbot">
+		<div class="row">
+			
+			<div class="span6 whitebg">
+				<div class="sect-head cf">
+					<h1 class="orange">most recent</h1>
+					<h2>new ideas for a new era</h2>
+					<a href="{% url 'idea_manage' %}" class="arr-link">&nbsp;</a>
+				</div>                        
+				{% for idea in most_recent_ideas %}
+				<div class="small-idea">
+				   <div class="row">
+						<div class="count-action span2">
+							{% include "idea/include/tally_cell.html" %}
+						</div>
+						<div class="idea-info span4">
+							{% include "idea/include/meta_data.html" %}
+						</div>
+					</div>
+				</div>                        
+				{% endfor %}
+			</div>
+			
+			<div class="span6 whitebg">
+				<div class="sect-head cf">
+					<h1 class="orange">top ideas</h1>
+					<h2>inspiration for us all</h2>
+					<a href="{% url 'idea_manage' %}?sort=num_votes" class="arr-link">&nbsp;</a>
+				</div>                        
+				{% for idea in top_ideas %}
+				<div class="small-idea">
+				   <div class="row">
+						<div class="count-action span2">
+							{% include "idea/include/tally_cell.html" %}
+						</div>
+						<div class="idea-info span4">
+							{% include "idea/include/meta_data.html" %}
+						</div>
+					</div>
+				</div>                        
+				{% endfor %}
+			</div>
+
+		</div>
+	</div>
+	
+</div>
+{% endblock %}
