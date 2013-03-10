@@ -13,9 +13,9 @@ from torch.idea.models import Idea, order_by_popular
 def create(request):
     IdeaForm = make_IdeaForm(request.user)
     if request.method == 'POST':
-        form = IdeaForm(request.POST)
-        if form.is_valid():
-            idea = form.save()
+        idea_form = IdeaForm(request.POST)
+        if idea_form.is_valid():
+            idea = idea_form.save()
             url = reverse('idea_view', kwargs={'idea_id': idea.pk})
             return HttpResponse(
                 dumps(
@@ -24,9 +24,9 @@ def create(request):
                 mimetype="application/json",
             )
     else:
-        form = IdeaForm()
+        idea_form = IdeaForm()
     context = RequestContext(request, {
-        'form': form,
+        'idea_form': idea_form,
     })
 
     return render_to_response(
