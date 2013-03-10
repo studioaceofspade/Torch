@@ -1,25 +1,62 @@
 from django.conf import settings
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.forms import AuthenticationForm
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-from django.shortcuts import redirect, render_to_response, get_object_or_404
+from django.core.urlresolvers import reverse
+from django.http import HttpResponse
+from django.shortcuts import render_to_response, get_object_or_404
 from django.template import RequestContext
+from django.utils.simplejson import dumps
 
+from torch.account.forms import UserForm as TorchUserForm
+from torch.account.views import _deal_with_form_validation
 from torch.idea.forms import make_IdeaForm
 from torch.idea.models import Idea, order_by_popular
 
 
-@login_required
 def create(request):
     IdeaForm = make_IdeaForm(request.user)
+    is_create = False
+
+    # If the user is logged in then we don't need a form.
+    if request.user.is_authenticated():
+        UserForm = None
+    elif request.method == 'POST':
+        # Figure out if its creating a user account or logging in.
+        if 'first_name' in request.POST:
+            is_create = True
+            UserForm = TorchUserForm
+        else:
+            UserForm = AuthenticationForm
+
     if request.method == 'POST':
-        form = IdeaForm(request.POST)
-        if form.is_valid():
-            form.save()
-        return redirect('home')
+        # We need to authenticate the user and rebuild the IdeaForm
+        user_form_is_valid = True
+        if UserForm is not None:
+            user_form = UserForm(data=request.POST)
+            user_form_is_valid, user = _deal_with_form_validation(
+                request,
+                user_form,
+                is_create,
+            )
+            print user_form_is_valid, user, user_form.errors
+            if user_form_is_valid:
+                IdeaForm = make_IdeaForm(user)
+        idea_form = IdeaForm(request.POST)
+        if idea_form.is_valid() and user_form_is_valid:
+            idea = idea_form.save()
+            url = reverse('idea_view', kwargs={'idea_id': idea.pk})
+            return HttpResponse(
+                dumps(
+                    {'url': url},
+                ),
+                mimetype="application/json",
+            )
     else:
-        form = IdeaForm()
+        idea_form = IdeaForm()
+        user_form = TorchUserForm()
     context = RequestContext(request, {
-        'form': form,
+        'user_form': user_form,
+        'idea_form': idea_form,
     })
 
     return render_to_response(
