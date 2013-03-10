@@ -45,7 +45,7 @@
 				<div class="sect-head cf">
 					<h1 class="orange">most recent</h1>
 					<h2>new ideas for a new era</h2>
-					<a href="#" class="arr-link">&nbsp;</a>
+					<a href="{% url 'idea_manage' %}" class="arr-link">&nbsp;</a>
 				</div>                        
 				{% for idea in most_recent_ideas %}
 				<div class="small-idea">
@@ -65,7 +65,7 @@
 				<div class="sect-head cf">
 					<h1 class="orange">top ideas</h1>
 					<h2>inspiration for us all</h2>
-					<a href="#" class="arr-link">&nbsp;</a>
+					<a href="{% url 'idea_manage' %}?sort=num_votes" class="arr-link">&nbsp;</a>
 				</div>                        
 				{% for idea in top_ideas %}
 				<div class="small-idea">
