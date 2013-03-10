@@ -1,4 +1,12 @@
-from django.shortcuts import HttpResponse
+from django.template import RequestContext
+from django.shortcuts import render_to_response
+
 
 def home(request):
-    return HttpResponse('test')
+    context = RequestContext(request, {
+    })
+
+    return render_to_response(
+        'home.html',
+        context_instance=context,
+    )
