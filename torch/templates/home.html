@@ -21,8 +21,8 @@
 			</div>
 			<div class="span6">
 				<div class="addpad">
-					<a class="block-link" href="#">submit your idea</a>
-					<a class="block-link" href="#">check out some ideas</a>
+					<a class="block-link" href="{% url 'idea_create' %}">submit your idea</a>
+					<a class="block-link" href="{% url 'idea_manage' %}">check out some ideas</a>
 				</div>
 			</div>
 		</div>
@@ -47,51 +47,18 @@
 					<h2>new ideas for a new era</h2>
 					<a href="#" class="arr-link">&nbsp;</a>
 				</div>                        
+				{% for idea in most_recent_ideas %}
 				<div class="small-idea">
 				   <div class="row">
 						<div class="count-action span2">
-							<span class="tally">72</span>
-							<a class="small-block-link" href="#">like this idea</a>
-							<a class="small-block-link" href="#">more info</a>
+							{% include "idea/include/tally_cell.html" %}
 						</div>
 						<div class="idea-info span4">
-							<h3>Create a brewery using only local ingredients</h3>
-							<div class="submit-info">
-								<p>Submitted by Jon Savage on March 4th in Creativity</p>
-							</div>
+							{% include "idea/include/meta_data.html" %}
 						</div>
 					</div>
 				</div>                        
-				<div class="small-idea">
-				   <div class="row">
-						<div class="count-action span2">
-							<span class="tally">72</span>
-							<a class="small-block-link" href="#">like this idea</a>
-							<a class="small-block-link" href="#">more info</a>
-						</div>
-						<div class="idea-info span4">
-							<h3>Create a brewery using only local ingredients</h3>
-							<div class="submit-info">
-								<p>Submitted by Jon Savage on March 4th in Creativity</p>
-							</div>
-						</div>
-					</div>
-				</div>
-				<div class="small-idea">
-				   <div class="row">
-						<div class="count-action span2">
-							<span class="tally">72</span>
-							<a class="small-block-link" href="#">like this idea</a>
-							<a class="small-block-link" href="#">more info</a>
-						</div>
-						<div class="idea-info span4">
-							<h3>Create a brewery using only local ingredients</h3>
-							<div class="submit-info">
-								<p>Submitted by Jon Savage on March 4th in Creativity</p>
-							</div>
-						</div>
-					</div>
-				</div>
+				{% endfor %}
 			</div>
 			
 			<div class="span6 whitebg">
@@ -100,51 +67,18 @@
 					<h2>inspiration for us all</h2>
 					<a href="#" class="arr-link">&nbsp;</a>
 				</div>                        
+				{% for idea in top_ideas %}
 				<div class="small-idea">
 				   <div class="row">
 						<div class="count-action span2">
-							<span class="tally">72</span>
-							<a class="small-block-link" href="#">like this idea</a>
-							<a class="small-block-link" href="#">more info</a>
+							{% include "idea/include/tally_cell.html" %}
 						</div>
 						<div class="idea-info span4">
-							<h3>Create a brewery using only local ingredients</h3>
-							<div class="submit-info">
-								<p>Submitted by Jon Savage on March 4th in Creativity</p>
-							</div>
+							{% include "idea/include/meta_data.html" %}
 						</div>
 					</div>
 				</div>                        
-				<div class="small-idea">
-				   <div class="row">
-						<div class="count-action span2">
-							<span class="tally">72</span>
-							<a class="small-block-link" href="#">like this idea</a>
-							<a class="small-block-link" href="#">more info</a>
-						</div>
-						<div class="idea-info span4">
-							<h3>Create a brewery using only local ingredients</h3>
-							<div class="submit-info">
-								<p>Submitted by Jon Savage on March 4th in Creativity</p>
-							</div>
-						</div>
-					</div>
-				</div>
-				<div class="small-idea">
-				   <div class="row">
-						<div class="count-action span2">
-							<span class="tally">72</span>
-							<a class="small-block-link" href="#">like this idea</a>
-							<a class="small-block-link" href="#">more info</a>
-						</div>
-						<div class="idea-info span4">
-							<h3>Create a brewery using only local ingredients</h3>
-							<div class="submit-info">
-								<p>Submitted by Jon Savage on March 4th in Creativity</p>
-							</div>
-						</div>
-					</div>
-				</div>
+				{% endfor %}
 			</div>
 
 		</div>
