@@ -265,5 +265,42 @@ class IdeaClientTestCase(TestCase):
         self.assertEqual(idea.tag, CREATIVITY)
 
         r = c.get(idea_create)
+        self.assertContains(r, '>logout<')
+
+    def test_create_idea_not_registered(self):
+        c = self.client
+
+        idea_create = reverse('idea_create')
+
+        # Make sure there are no ideas and the user is not logged in.
+        self.assertEqual(Idea.objects.count(), 0)
+        c.logout()
+        self.assertEqual(
+            User.objects.filter(username='user@example.com').count(),
+            0,
+        )
+
+        params = {
+            'title': 'title',
+            'description': 'description',
+            'tag': CREATIVITY,
+            'first_name': 'User',
+            'username': 'user@example.com',
+            'password': 'userpw',
+        }
+
+        r = c.post(idea_create, params)
+        response = loads(r.content)
+        assert 'url' in response
+
+        # Make sure the idea was created and that the user is logged in.
+        idea = Idea.objects.get()
+        user = User.objects.get(username='user@example.com')
+        self.assertEqual(idea.author, user)
+        self.assertEqual(idea.title, 'title')
+        self.assertEqual(idea.description, 'description')
+        self.assertEqual(idea.tag, CREATIVITY)
+
+        r = c.get(idea_create)
         print r.content
         self.assertContains(r, '>logout<')
