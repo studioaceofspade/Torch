@@ -4,7 +4,7 @@ from django.http import HttpResponse
 from django.shortcuts import render_to_response, get_object_or_404
 from django.template import RequestContext
 from django.core.urlresolvers import reverse
-from django.utils.simplejson import loads
+from django.utils.simplejson import dumps
 
 from torch.idea.forms import make_IdeaForm
 from torch.idea.models import Idea, order_by_popular
@@ -16,9 +16,9 @@ def create(request):
         form = IdeaForm(request.POST)
         if form.is_valid():
             idea = form.save()
-            url = str(reverse('idea_view', kwargs={'idea_id': idea.pk}))
+            url = reverse('idea_view', kwargs={'idea_id': idea.pk})
             return HttpResponse(
-                loads(
+                dumps(
                     {'url': url},
                 ),
                 mimetype="application/json",

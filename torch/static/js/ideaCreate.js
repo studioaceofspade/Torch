@@ -18,12 +18,14 @@ $(document).ready(function() {
                 $(this).attr('selected', 'selected');
             }
         });
-        $.post(
-            $submitForm.attr('action'),
-            $submitForm.serialize()).success(function(data) {
+        $.ajax({
+            type: 'POST',
+            url: $submitForm.attr('action'),
+            data: $submitForm.serialize(),
+            success: function(data) {
                 $('a.thepermalink').attr('href', data.url);
-                e.currentTarget.click();
-            });
-        $submitForm.submit();
+                $('.slideshow').cycle.next();
+            }
+        });
     });
 });
