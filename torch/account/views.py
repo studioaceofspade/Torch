@@ -6,6 +6,7 @@ from django.contrib.auth import (
     login as django_login,
     logout as django_logout,
 )
+from django.http import Http404
 from django.template import RequestContext
 from django.contrib.auth.forms import AuthenticationForm
 from django.shortcuts import redirect, render_to_response, get_object_or_404
@@ -66,6 +67,8 @@ def logout(request):
 
 def my_account(request, user_id):
     user = get_object_or_404(User, pk=user_id)
+    if request.user.pk != user.pk:
+        raise Http404()
 
     if request.method == 'POST':
         form = MyAccountUserForm(instance=user, data=request.POST)

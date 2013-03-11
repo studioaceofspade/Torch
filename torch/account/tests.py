@@ -99,6 +99,9 @@ class AccountClientTestCase(TestCase):
             username='username@username.com',
             first_name='first_name',
         )
+        user.set_password('pw')
+        user.save()
+        assert c.login(username='username@username.com', password='pw')
         my_account = reverse(
             'account_my_account',
             kwargs={
@@ -127,6 +130,9 @@ class AccountClientTestCase(TestCase):
             username='username@username.com',
             first_name='first_name',
         )
+        user.set_password('pw')
+        user.save()
+        assert c.login(username='username@username.com', password='pw')
         my_account = reverse(
             'account_my_account',
             kwargs={
@@ -155,6 +161,9 @@ class AccountClientTestCase(TestCase):
             username='username@username.com',
             first_name='first_name',
         )
+        user.set_password('pw')
+        user.save()
+        assert c.login(username='username@username.com', password='pw')
         my_account = reverse(
             'account_my_account',
             kwargs={
@@ -183,6 +192,9 @@ class AccountClientTestCase(TestCase):
             username='username@username.com',
             first_name='first_name',
         )
+        user.set_password('pw')
+        user.save()
+        assert c.login(username='username@username.com', password='pw')
         my_account = reverse(
             'account_my_account',
             kwargs={
@@ -214,6 +226,7 @@ class AccountClientTestCase(TestCase):
         )
         user.set_password('password')
         user.save()
+        assert c.login(username='username@username.com', password='password')
         my_account = reverse(
             'account_my_account',
             kwargs={
@@ -228,6 +241,7 @@ class AccountClientTestCase(TestCase):
         }
 
         r = c.post(my_account, params)
+        self.assertEqual(r.status_code, 200)
         self.assertFormError(
             r,
             'form',
@@ -239,3 +253,27 @@ class AccountClientTestCase(TestCase):
         self.assertEqual(user.username, 'username@username.com')
         self.assertEqual(user.first_name, 'first_name')
         assert user.check_password('password')
+
+    def test_account_edit_ensure_only_current_user(self):
+        c = self.client
+
+        user = User.objects.create(
+            username='username@username.com',
+            first_name='first_name',
+        )
+        my_account = reverse(
+            'account_my_account',
+            kwargs={
+                'user_id': user.pk,
+            },
+        )
+        logged_in_user = User.objects.create(
+            username='logged_in_user',
+        )
+        logged_in_user.set_password('pw')
+        logged_in_user.save()
+
+        assert c.login(username='logged_in_user', password='pw')
+
+        r = c.get(my_account)
+        self.assertEqual(r.status_code, 404)
