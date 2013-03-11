@@ -16,4 +16,16 @@ urlpatterns = patterns(
     ),
     url('^logout/$', 'logout', name='account_logout'),
     url('^(?P<user_id>\d+)/mine/$', 'my_account', name='account_my_account'),
+    url(
+        '^forgot_password/$',
+        'forgot_password',
+        kwargs={'success': False},
+        name='account_forgot_password',
+    ),
+    url(
+        '^forgot_password/success/$',
+        'forgot_password',
+        kwargs={'success': True},
+        name='account_forgot_password_success',
+    ),
 )

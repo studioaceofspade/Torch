@@ -142,3 +142,23 @@ class MyAccountUserForm(forms.Form):
             'first_name',
             'password',
         )
+
+
+class ForgotEmailForm(forms.Form):
+    username = forms.EmailField(
+        label='Email Address',
+        required=True,
+        max_length=130,
+        widget=forms.TextInput(attrs={
+            'autocompleate': 'off',
+            'placeholder': 'yourname@example.com',
+        }),
+    )
+
+    def clean_username(self):
+        username = self.cleaned_data['username']
+        if not User.objects.filter(email=username).exists():
+            raise forms.ValidationError(
+                'That email address is not in our records, please try another',
+            )
+        return username
