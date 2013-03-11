@@ -9,33 +9,37 @@
 		<h1 class="title"></h1>
 	</div>
 	
+	{% if form.errors %}
 	<div class="container cf mbot whitebg errors">
 		<div class="addpad">
 			<h1>Errors</h1>
-			<p>The two passwords did not match.</p>
+			{{ form.errors }}
 		</div>
 	</div>
+	{% endif %}
 	
 	<div class="container whitebg mbot account-settings">
 		<div class="span12 mbot">
+			<form action="." method="post" class="my-account-form">{% csrf_token %}
 				<h2 class="sub-head">Login & contact settings</h2>
-				<label>Your Name</label>
-				<input class="slide-login" type="text" placeholder="Jonathan Savage">
-				<label>Email address</label>
-				<input type="text" placeholder="jon@studioaceofspade.com">
+				<label>{{ form.first_name.label }}</label>
+				{{ form.first_name }}
+				<label>{{ form.username.label }}</label>
+				{{ form.username }}
 				<div class="span3 kill-margin">
-					<a class="small-block-link" href="#">Save changes</a>
+					<a class="small-block-link my-account" href="#">Save changes</a>
 				</div>
 				<div class="float-fix">
 					<h2>Reset your password</h2>
 
-					<label>Password</label>
-					<input type="password">
-					<input type="password">
+					<label>{{ form.password.label }}</label>
+					{{ form.password1 }}
+					{{ form.password }}
 					<div class="span3 kill-margin">
-						<a class="small-block-link back" href="#">Update Password</a>
+						<a class="small-block-link back my-account" href="#">Update Password</a>
 					</div>
 				</div>
+			</form>
 		</div>
 	</div>
 				
@@ -93,3 +97,7 @@
 	{% endif %}
 </div>
 {% endblock %}           
+
+{% block extra_script %}
+<script src="{{ STATIC_URL }}js/myAccount.js"></script>
+{% endblock %}

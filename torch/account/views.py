@@ -10,7 +10,7 @@ from django.template import RequestContext
 from django.contrib.auth.forms import AuthenticationForm
 from django.shortcuts import redirect, render_to_response, get_object_or_404
 
-from torch.account.forms import UserForm
+from torch.account.forms import UserForm, MyAccountUserForm
 from torch.idea.models import Idea
 
 
@@ -66,6 +66,15 @@ def logout(request):
 
 def my_account(request, user_id):
     user = get_object_or_404(User, pk=user_id)
+
+    if request.method == 'POST':
+        form = MyAccountUserForm(instance=user, data=request.POST)
+        if form.is_valid():
+            user = form.save()
+            return redirect('account_my_account', user_id=user.pk)
+    else:
+        form = MyAccountUserForm(instance=user)
+
     idea_qs = Idea.objects.filter(
         author=user,
     ).select_related()
@@ -79,9 +88,11 @@ def my_account(request, user_id):
         ideas = paginator.page(1)
     except EmptyPage:
         ideas = paginator.page(paginator.num_pages)
+
     context = RequestContext(request, {
         'user': user,
         'ideas': ideas,
+        'form': form,
     })
 
     return render_to_response(
