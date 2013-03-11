@@ -102,3 +102,13 @@ def my_account(request, user_id):
         'account/my_account.html',
         context_instance=context,
     )
+
+
+def forgot_password(request):
+    context = RequestContext(request, {
+    })
+
+    return render_to_response(
+        'account/forgot_password.html',
+        context_instance=context,
+    )
