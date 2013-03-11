@@ -1,3 +1,3 @@
 <span class="tally">{{ idea.num_votes }}</span>
-<a class="small-block-link" href="#">like this idea</a>
+<a class="small-block-link like-this-idea" data-url="{% url 'idea_vote' idea_id=idea.pk %}" href="#">like this idea</a>
 <a class="small-block-link" href="{% url 'idea_view' idea_id=idea.pk %}">more info</a>

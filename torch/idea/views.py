@@ -11,6 +11,7 @@ from torch.account.forms import UserForm as TorchUserForm
 from torch.account.views import _deal_with_form_validation
 from torch.idea.forms import make_IdeaForm
 from torch.idea.models import Idea, order_by_popular
+from torch.vote.models import create_vote
 
 
 def create(request):
@@ -38,7 +39,6 @@ def create(request):
                 user_form,
                 is_create,
             )
-            print user_form_is_valid, user, user_form.errors
             if user_form_is_valid:
                 IdeaForm = make_IdeaForm(user)
         idea_form = IdeaForm(request.POST)
@@ -77,6 +77,26 @@ def view(request, idea_id):
     return render_to_response(
         'idea/view.html',
         context_instance=context,
+    )
+
+
+def vote(request, idea_id):
+    idea = get_object_or_404(
+        Idea.objects.select_related(),
+        pk=idea_id,
+    )
+    ip = request.META['REMOTE_ADDR']
+    host = request.META['REMOTE_HOST']
+    vote, created = create_vote(
+        request.user,
+        idea,
+        ip='%s:%s' % (host, ip),
+    )
+    return HttpResponse(
+        dumps(
+            {'created': created},
+        ),
+        mimetype="application/json",
     )
 
 

@@ -4,5 +4,6 @@ urlpatterns = patterns(
     'torch.idea.views',
     url(r'^create/$', 'create', name='idea_create'),
     url(r'^(?P<idea_id>\d+)/view/$', 'view', name='idea_view'),
+    url(r'^(?P<idea_id>\d+)/vote/$', 'vote', name='idea_vote'),
     url(r'^manage/$', 'manage', name='idea_manage'),
 )

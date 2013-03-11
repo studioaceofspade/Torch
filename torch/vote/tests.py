@@ -31,7 +31,7 @@ class VoteTestCase(TestCase):
             description='foobar',
             tag=CREATIVITY,
         )
-        vote = create_vote(
+        vote, _ = create_vote(
             user=user,
             idea=idea,
         )
@@ -61,15 +61,15 @@ class VoteTestCase(TestCase):
         )
 
         # Three votes, one 1 and two for 2
-        vote_1 = create_vote(
+        vote_1, _ = create_vote(
             user=user_1,
             idea=idea_1,
         )
-        vote_2 = create_vote(
+        vote_2, _ = create_vote(
             user=user_1,
             idea=idea_2,
         )
-        vote_3 = create_vote(
+        vote_3, _ = create_vote(
             user=user_2,
             idea=idea_2,
         )
@@ -97,7 +97,7 @@ class VoteTestCase(TestCase):
             description='foobar',
             tag=CREATIVITY,
         )
-        vote = create_vote(
+        vote, _ = create_vote(
             user=user,
             idea=idea,
             ip='127.0.0.1',
@@ -146,7 +146,7 @@ class VoteTestCase(TestCase):
 
         # Show that the helper method for creating votes deals with the unique
         # together restraint.
-        second_vote = create_vote(
+        second_vote, _ = create_vote(
             user=user,
             idea=idea,
         )
