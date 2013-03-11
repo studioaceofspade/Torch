@@ -51,6 +51,13 @@ def create(request):
                 ),
                 mimetype="application/json",
             )
+        else:
+            return HttpResponse(
+                dumps(
+                    {'errors': str(idea_form.errors) + str(user_form.errors)},
+                ),
+                mimetype="application/json",
+            )
     else:
         idea_form = IdeaForm()
         user_form = TorchUserForm()
