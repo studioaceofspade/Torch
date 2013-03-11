@@ -42,21 +42,28 @@ $(document).ready(function() {
             }
         });
         if ($('.already-have-account').hasClass('current')) {
+            console.log('test');
             $submitForm.find('input#id_first_name').remove();
         }
+        var $errors = $('.form-errors-container');
         $.ajax({
             type: 'POST',
             url: $submitForm.attr('action'),
             data: $submitForm.serialize(),
             success: function(data) {
-                console.log(data);
                 if (data.url) {
+                    $errors.hide();
                     $('a.thepermalink').attr('href', data.url);
                     $('.slideshow').cycle.next();
+                } else {
+                    $errors.find('.form-errors').html(data.errors);
+                    $errors.show();
+                    $('.slideshow').cycle(0);
+                    //$('.slideshow').cycle.prev();
+                    //$('.slideshow').cycle.prev();
                 }
             },
             error: function() {
-                console.log('test');
             }
         });
     });

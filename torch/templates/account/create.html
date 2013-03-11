@@ -16,14 +16,14 @@
 		user doesn't exist
 		user exists (when signing up)
 	 -->
+	{% if form.errors %}
 	<div class="container cf mbot whitebg">
-		{% if form.errors %}
-			<div class="addpad">
-				<h1>Oops. There were some erros.</h1>
-				{{ form.errors }}
-			</div>
-		{% endif %}
+		<div class="addpad">
+			<h1>Oops. There were some erros.</h1>
+			{{ form.errors }}
+		</div>
 	</div>
+	{% endif %}
 	
 	<div class="controls container mbot">
 		<div class="row">

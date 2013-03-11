@@ -18,7 +18,6 @@ EMAIL_HOST_PASSWORD = ''  # TODO This needs to be set.
 
 MANAGERS = ADMINS
 
-print path.join(PROJECT_ROOT, 'dev.db')
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',

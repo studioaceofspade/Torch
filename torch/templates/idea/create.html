@@ -7,13 +7,11 @@
 	<div class="container cf mbot">
 		<h1 class="title"></h1>
 	</div>
-	<div class="container cf mbot whitebg">
-		{% if form.errors %}
-			<div class="addpad">
-				<h1>Oops. There were some erros.</h1>
-				{{ idea_form.errors }}
-			</div>
-		{% endif %}
+	<div class="container cf mbot whitebg form-errors-container" style="display: none">
+        <div class="addpad">
+            <h1>Oops. There were some erros.</h1>
+            <div class='form-errors'></div>
+        </div>
 	</div>
 	
 	<!-- main messaging and ctas -->
