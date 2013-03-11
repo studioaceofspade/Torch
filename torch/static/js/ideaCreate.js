@@ -7,6 +7,9 @@ $(document).ready(function() {
         $(this).addClass('current');
     });
     $('.user-login-input a').click(function(e) {
+        if ($(this).hasClass('forgot-password-link')) {
+            return;
+        }
         e.preventDefault();
         $('.user-login-input a').removeClass('current');
         $(this).addClass('current');
