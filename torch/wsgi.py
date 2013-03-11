@@ -14,11 +14,18 @@ framework.
 
 """
 import os
+import sys
 
 # We defer to a DJANGO_SETTINGS_MODULE already in the environment. This breaks
 # if running multiple sites in the same mod_wsgi process. To fix this, use
 # mod_wsgi daemon mode with each site in its own daemon process, or use
 # os.environ["DJANGO_SETTINGS_MODULE"] = "torch.settings"
+PROJECT_ROOT = os.path.abspath(os.path.dirname(__file__))
+sys_path = os.path.abspath(os.path.join(
+    PROJECT_ROOT,
+    '..',
+))
+sys.path.append(sys_path)
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "torch.settings")
 
 # This application object is used by any WSGI server configured to use this
