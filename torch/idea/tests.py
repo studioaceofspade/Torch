@@ -302,5 +302,131 @@ class IdeaClientTestCase(TestCase):
         self.assertEqual(idea.tag, CREATIVITY)
 
         r = c.get(idea_create)
-        print r.content
         self.assertContains(r, '>logout<')
+
+    def test_vote_with_user(self):
+        c = self.client
+        idea = Idea.objects.create(
+            author=self.user,
+            title='test',
+            description='description',
+            tag=CREATIVITY,
+        )
+        self.assertEqual(Vote.objects.count(), 0)
+
+        idea_vote = reverse('idea_vote', kwargs={'idea_id': idea.pk})
+        r = c.get(
+            idea_vote,
+            REMOTE_HOST='host',
+        )
+
+        response = loads(r.content)
+        assert 'created' in response
+        assert response['created']
+
+        self.assertEqual(Vote.objects.count(), 1)
+        vote = Vote.objects.get()
+        self.assertEqual(vote.voter, self.user)
+        self.assertEqual(vote.ip, None)
+
+        r = c.get(
+            idea_vote,
+            REMOTE_HOST='host',
+        )
+
+        # Can only vote once per idea
+        response = loads(r.content)
+        assert 'created' in response
+        assert not response['created']
+
+        self.assertEqual(Vote.objects.count(), 1)
+        vote = Vote.objects.get()
+        self.assertEqual(vote.voter, self.user)
+        self.assertEqual(vote.ip, None)
+
+        # Try show that you can still vote on other ideas
+        idea = Idea.objects.create(
+            author=self.user,
+            title='test',
+            description='description',
+            tag=CREATIVITY,
+        )
+
+        idea_vote = reverse('idea_vote', kwargs={'idea_id': idea.pk})
+        r = c.get(
+            idea_vote,
+            REMOTE_HOST='host',
+        )
+
+        response = loads(r.content)
+        assert 'created' in response
+        assert response['created']
+
+        self.assertEqual(Vote.objects.count(), 2)
+        vote = Vote.objects.exclude(pk=vote.pk).get()
+        self.assertEqual(vote.voter, self.user)
+        self.assertEqual(vote.ip, None)
+
+    def test_vote_with_anon(self):
+        c = self.client
+        c.logout()
+        idea = Idea.objects.create(
+            author=self.user,
+            title='test',
+            description='description',
+            tag=CREATIVITY,
+        )
+        self.assertEqual(Vote.objects.count(), 0)
+
+        idea_vote = reverse('idea_vote', kwargs={'idea_id': idea.pk})
+        r = c.get(
+            idea_vote,
+            REMOTE_HOST='host',
+        )
+
+        response = loads(r.content)
+        assert 'created' in response
+        assert response['created']
+
+        self.assertEqual(Vote.objects.count(), 1)
+        vote = Vote.objects.get()
+        self.assertEqual(vote.voter, None)
+        self.assertEqual(vote.ip, 'host:127.0.0.1')
+
+        r = c.get(
+            idea_vote,
+            REMOTE_HOST='host',
+        )
+
+        # Can only vote once per idea
+        response = loads(r.content)
+        assert 'created' in response
+        assert not response['created']
+
+        self.assertEqual(Vote.objects.count(), 1)
+        vote = Vote.objects.get()
+        self.assertEqual(vote.voter, None)
+        self.assertEqual(vote.ip, 'host:127.0.0.1')
+
+        # Try show that you can still vote on other ideas
+        idea = Idea.objects.create(
+            author=self.user,
+            title='test',
+            description='description',
+            tag=CREATIVITY,
+        )
+
+        idea_vote = reverse('idea_vote', kwargs={'idea_id': idea.pk})
+        r = c.get(
+            idea_vote,
+            REMOTE_HOST='host',
+        )
+
+        response = loads(r.content)
+        assert 'created' in response
+        assert not response['created']
+
+        self.assertEqual(Vote.objects.count(), 1)
+        vote = Vote.objects.get()
+        self.assertEqual(vote.voter, None)
+        self.assertEqual(vote.ip, 'host:127.0.0.1')

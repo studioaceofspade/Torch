@@ -46,6 +46,8 @@ def create_vote(user, idea, ip=None):
     to ensure that we are not violating the unique_together constraint between
     ``voter`` and ``idea``.
     """
+    if ip and Vote.objects.filter(ip=ip).exists():
+        return None, False
     vote_kwargs = {
         'idea': idea,
     }
@@ -56,8 +58,8 @@ def create_vote(user, idea, ip=None):
         vote_kwargs['ip'] = ip
     else:
         vote_kwargs['voter'] = user
-    vote, _ = Vote.objects.get_or_create(**vote_kwargs)
-    return vote
+    vote, created = Vote.objects.get_or_create(**vote_kwargs)
+    return vote, created
 
 
 def get_votes_for_idea(idea):
