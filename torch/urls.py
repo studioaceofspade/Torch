@@ -7,6 +7,8 @@ from django.conf.urls import patterns, include, url
 urlpatterns = patterns('',
     # Examples:
     url(r'^$', 'torch.views.home', name='home'),
+    url(r'^about/$', 'torch.views.about', name='about'),
+    url(r'^contact/$', 'torch.views.contact', name='contact'),
     url(r'^idea/', include('torch.idea.urls')),
     url(r'^accounts/', include('torch.account.urls')),
 

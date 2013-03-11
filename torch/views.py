@@ -21,3 +21,23 @@ def home(request):
         'home.html',
         context_instance=context,
     )
+
+
+def about(request):
+    context = RequestContext(request, {
+    })
+
+    return render_to_response(
+        'about.html',
+        context_instance=context,
+    )
+
+
+def contact(request):
+    context = RequestContext(request, {
+    })
+
+    return render_to_response(
+        'contact.html',
+        context_instance=context,
+    )
