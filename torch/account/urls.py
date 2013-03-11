@@ -19,6 +19,13 @@ urlpatterns = patterns(
     url(
         '^forgot_password/$',
         'forgot_password',
+        kwargs={'success': False},
         name='account_forgot_password',
+    ),
+    url(
+        '^forgot_password/success/$',
+        'forgot_password',
+        kwargs={'success': True},
+        name='account_forgot_password_success',
     ),
 )

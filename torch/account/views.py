@@ -11,7 +11,8 @@ from django.template import RequestContext
 from django.contrib.auth.forms import AuthenticationForm
 from django.shortcuts import redirect, render_to_response, get_object_or_404
 
-from torch.account.forms import UserForm, MyAccountUserForm
+from torch.account.forms import UserForm, MyAccountUserForm, ForgotEmailForm
+from torch.account.models import send_email
 from torch.idea.models import Idea
 
 
@@ -104,8 +105,17 @@ def my_account(request, user_id):
     )
 
 
-def forgot_password(request):
+def forgot_password(request, success):
+    if request.method == 'POST':
+        form = ForgotEmailForm(data=request.POST)
+        if form.is_valid():
+            send_email(form.cleaned_data['username'])
+            return redirect('account_forgot_password_success')
+    else:
+        form = ForgotEmailForm()
     context = RequestContext(request, {
+        'success': success,
+        'form': form,
     })
 
     return render_to_response(
