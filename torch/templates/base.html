@@ -30,7 +30,7 @@
 					<li><a href="{% url 'idea_manage' %}">ideas</a></li>
                     <li><a href="#">contact</a></li>
 					{% if user.is_authenticated %}
-					<li><a href="{% url 'account_login' %}">my account</a></li>
+					<li><a href="{% url 'account_my_account' user_id=user.pk %}">my account</a></li>
 					<li><a href="{% url 'account_logout' %}">logout</a></li>
 					{% else %}
 					<li><a href="{% url 'account_login' %}">login</a></li>

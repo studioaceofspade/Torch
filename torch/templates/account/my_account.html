@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% block page_title %}Amazing ideas coming from those in your community.{% endblock %}
+{% block page_title %}Your Account Controls. Manage it all from here.{% endblock %}
 
 {% block content %}
 <div id="about" class="cf page">
@@ -9,23 +9,40 @@
 		<h1 class="title"></h1>
 	</div>
 	
-	<div class="controls container mbot">
-		<div class="row">
-			<div class="span3">
-				<a href="{% url 'idea_manage' %}" class="{% if not sort %}current {% endif %}small-block-link">Most Recent</a>
-			</div>
-			<div class="span3">
-				<a href="?sort=num_votes" class="{% if sort == 'num_votes' %}current {% endif %}small-block-link">Most Liked</a>
-			</div>
-			<div class="span3">
-				<a href="?sort=popular" class="{% if sort == 'popular' %}current {% endif %}small-block-link">Most Popular</a>
-			</div>
-			<div class="span3">
-				<a href="{% url 'idea_create' %}" class="small-block-link">Submit your idea</a>
-			</div>
+	{% if form.errors %}
+	<div class="container cf mbot whitebg errors">
+		<div class="addpad">
+			<h1>Errors</h1>
+			{{ form.errors }}
 		</div>
 	</div>
+	{% endif %}
 	
+	<div class="container whitebg mbot account-settings">
+		<div class="span12 mbot">
+			<form action="." method="post" class="my-account-form">{% csrf_token %}
+				<h2 class="sub-head">Login & contact settings</h2>
+				<label>{{ form.first_name.label }}</label>
+				{{ form.first_name }}
+				<label>{{ form.username.label }}</label>
+				{{ form.username }}
+				<div class="span3 kill-margin">
+					<a class="small-block-link my-account" href="#">Save changes</a>
+				</div>
+				<div class="float-fix">
+					<h2>Reset your password</h2>
+
+					<label>{{ form.password.label }}</label>
+					{{ form.password1 }}
+					{{ form.password }}
+					<div class="span3 kill-margin">
+						<a class="small-block-link back my-account" href="#">Update Password</a>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+				
 	<!-- main messaging and ctas -->
 	<div class="container cf mbot whitebg">
 		<div class="row">
@@ -45,14 +62,14 @@
 					</thead>
 					<tbody>
 						{% for idea in ideas %}
-						<tr class="idea-data">
+						<tr>
 							<td>
-							{% include "idea/include/tally_cell.html" %}
+								{% include "idea/include/tally_cell.html" %}
 							</td>
 							<td>
 								<h3>{{ idea.title }}</h3>
 								<p>{{ idea.description }}</p>
-								<p>Submitted by {{ idea.author }} in {{ idea.get_tag_display }}</p>
+								
 							</td>
 							<td class="date"><p>{{ idea.created }}</p></td>
 						</tr>
@@ -62,7 +79,6 @@
 			</div>
 		</div>
 	</div>
-
 	{% if ideas.has_other_pages %}
 	<div class="paginate container mbot">
 		<div class="row">
@@ -79,8 +95,9 @@
 		</div>
 	</div>
 	{% endif %}
-{% endblock %}
+</div>
+{% endblock %}           
 
 {% block extra_script %}
-<script src="{{ STATIC_URL }}js/script.js"></script>
+<script src="{{ STATIC_URL }}js/myAccount.js"></script>
 {% endblock %}

@@ -91,3 +91,189 @@ class AccountClientTestCase(TestCase):
 
         r = c.get(account_login)
         self.assertNotContains(r, 'my account')
+
+    def test_account_edit_all_blank(self):
+        c = self.client
+
+        user = User.objects.create(
+            username='username@username.com',
+            first_name='first_name',
+        )
+        user.set_password('pw')
+        user.save()
+        assert c.login(username='username@username.com', password='pw')
+        my_account = reverse(
+            'account_my_account',
+            kwargs={
+                'user_id': user.pk,
+            },
+        )
+        params = {
+            'username': '',
+            'first_name': '',
+            'password': '',
+            'password1': '',
+        }
+
+        r = c.post(my_account, params)
+        self.assertEqual(r.status_code, 302)
+
+        user = User.objects.get(pk=user.pk)
+        self.assertEqual(user.username, 'username@username.com')
+        self.assertEqual(user.email, 'username@username.com')
+        self.assertEqual(user.first_name, 'first_name')
+
+    def test_account_edit_change_username(self):
+        c = self.client
+
+        user = User.objects.create(
+            username='username@username.com',
+            first_name='first_name',
+        )
+        user.set_password('pw')
+        user.save()
+        assert c.login(username='username@username.com', password='pw')
+        my_account = reverse(
+            'account_my_account',
+            kwargs={
+                'user_id': user.pk,
+            },
+        )
+        params = {
+            'username': 'test@test.com',
+            'first_name': '',
+            'password': '',
+            'password1': '',
+        }
+
+        r = c.post(my_account, params)
+        self.assertEqual(r.status_code, 302)
+
+        user = User.objects.get(pk=user.pk)
+        self.assertEqual(user.username, 'test@test.com')
+        self.assertEqual(user.email, 'test@test.com')
+        self.assertEqual(user.first_name, 'first_name')
+
+    def test_account_edit_change_first_name(self):
+        c = self.client
+
+        user = User.objects.create(
+            username='username@username.com',
+            first_name='first_name',
+        )
+        user.set_password('pw')
+        user.save()
+        assert c.login(username='username@username.com', password='pw')
+        my_account = reverse(
+            'account_my_account',
+            kwargs={
+                'user_id': user.pk,
+            },
+        )
+        params = {
+            'username': '',
+            'first_name': 'last_name',
+            'password': '',
+            'password1': '',
+        }
+
+        r = c.post(my_account, params)
+        self.assertEqual(r.status_code, 302)
+
+        user = User.objects.get(pk=user.pk)
+        self.assertEqual(user.username, 'username@username.com')
+        self.assertEqual(user.email, 'username@username.com')
+        self.assertEqual(user.first_name, 'last_name')
+
+    def test_account_edit_change_password(self):
+        c = self.client
+
+        user = User.objects.create(
+            username='username@username.com',
+            first_name='first_name',
+        )
+        user.set_password('pw')
+        user.save()
+        assert c.login(username='username@username.com', password='pw')
+        my_account = reverse(
+            'account_my_account',
+            kwargs={
+                'user_id': user.pk,
+            },
+        )
+        params = {
+            'username': '',
+            'first_name': '',
+            'password': 'pw',
+            'password1': 'pw',
+        }
+
+        r = c.post(my_account, params)
+        self.assertEqual(r.status_code, 302)
+
+        user = User.objects.get(pk=user.pk)
+        self.assertEqual(user.username, 'username@username.com')
+        self.assertEqual(user.email, 'username@username.com')
+        self.assertEqual(user.first_name, 'first_name')
+        assert user.check_password('pw')
+
+    def test_account_edit_invalid_password(self):
+        c = self.client
+
+        user = User.objects.create(
+            username='username@username.com',
+            first_name='first_name',
+        )
+        user.set_password('password')
+        user.save()
+        assert c.login(username='username@username.com', password='password')
+        my_account = reverse(
+            'account_my_account',
+            kwargs={
+                'user_id': user.pk,
+            },
+        )
+        params = {
+            'username': '',
+            'first_name': '',
+            'password': 'pw',
+            'password1': 'pw1',
+        }
+
+        r = c.post(my_account, params)
+        self.assertEqual(r.status_code, 200)
+        self.assertFormError(
+            r,
+            'form',
+            'password',
+            'The two passwords did not match.',
+        )
+
+        user = User.objects.get(pk=user.pk)
+        self.assertEqual(user.username, 'username@username.com')
+        self.assertEqual(user.first_name, 'first_name')
+        assert user.check_password('password')
+
+    def test_account_edit_ensure_only_current_user(self):
+        c = self.client
+
+        user = User.objects.create(
+            username='username@username.com',
+            first_name='first_name',
+        )
+        my_account = reverse(
+            'account_my_account',
+            kwargs={
+                'user_id': user.pk,
+            },
+        )
+        logged_in_user = User.objects.create(
+            username='logged_in_user',
+        )
+        logged_in_user.set_password('pw')
+        logged_in_user.save()
+
+        assert c.login(username='logged_in_user', password='pw')
+
+        r = c.get(my_account)
+        self.assertEqual(r.status_code, 404)
