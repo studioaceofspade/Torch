@@ -26,9 +26,9 @@
             </h1>
             <nav class="pull-right main-nav">
             	<ul>
-                	<li><a href="#">about</a></li>
+					<li><a href="{% url 'about' %}">about</a></li>
 					<li><a href="{% url 'idea_manage' %}">ideas</a></li>
-                    <li><a href="#">contact</a></li>
+					<li><a href="{% url 'contact' %}">contact</a></li>
 					{% if user.is_authenticated %}
 					<li><a href="{% url 'account_my_account' user_id=user.pk %}">my account</a></li>
 					<li><a href="{% url 'account_logout' %}">logout</a></li>
