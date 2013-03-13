@@ -1,13 +1,20 @@
 {% extends "base.html" %}
 
-{% block page_title %}A community conversation on entrepreneurship, innovation and creativity.{% endblock %}
+{% block page_title %}{% endblock %}
 
 {% block content %}
 <div id="home" class="cf page">
 	
 	<!-- main branding -->
 	<div class="container cf mbot">
-		<img src="{{ STATIC_URL }}img/horizon-brand-large.png" alt="Horizon is acommunity conversation on entrepreneurship, innovation and creativity happening in Elkhart County, Indiana">
+    	<div class="row">
+            <div class="span6">
+                <img class="homebrand" src="{{ STATIC_URL }}img/horizon-brand-large.png" alt="Horizon is acommunity conversation on entrepreneurship, innovation and creativity happening in Elkhart County, Indiana">
+            </div>
+            <div class="span6">
+                <h1 class="title">A community conversation on entrepreneurship, innovation and creativity in Elkhart County</h1>
+            </div>
+		</div>
 	</div>
 	
 	<!-- main messaging and ctas -->

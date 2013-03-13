@@ -144,6 +144,7 @@ button.small-block-link {
 
 /* Home Page========================= 
 ================================== */
+
 .sect-head {
 	position: relative;
 	border-bottom: 1px solid #f08d26;
@@ -190,7 +191,8 @@ button.small-block-link {
 	border-bottom: 1px solid #ddd;
 	margin-bottom: 4px;}
 .idea-info {
-	position: relative;}
+	position: relative;
+	min-height: 120px;}
 .idea-info h3,
 .ideas h3,
 .ideas .date p {
