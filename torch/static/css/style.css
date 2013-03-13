@@ -144,7 +144,8 @@ button.small-block-link {
 
 /* Home Page========================= 
 ================================== */
-
+#home .title {
+	padding-top: 32px;}
 .sect-head {
 	position: relative;
 	border-bottom: 1px solid #f08d26;
