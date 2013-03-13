@@ -317,7 +317,6 @@ class IdeaClientTestCase(TestCase):
         idea_vote = reverse('idea_vote', kwargs={'idea_id': idea.pk})
         r = c.get(
             idea_vote,
-            REMOTE_HOST='host',
         )
 
         response = loads(r.content)
@@ -331,7 +330,6 @@ class IdeaClientTestCase(TestCase):
 
         r = c.get(
             idea_vote,
-            REMOTE_HOST='host',
         )
 
         # Can only vote once per idea
@@ -355,7 +353,6 @@ class IdeaClientTestCase(TestCase):
         idea_vote = reverse('idea_vote', kwargs={'idea_id': idea.pk})
         r = c.get(
             idea_vote,
-            REMOTE_HOST='host',
         )
 
         response = loads(r.content)
@@ -381,7 +378,6 @@ class IdeaClientTestCase(TestCase):
         idea_vote = reverse('idea_vote', kwargs={'idea_id': idea.pk})
         r = c.get(
             idea_vote,
-            REMOTE_HOST='host',
         )
 
         response = loads(r.content)
@@ -391,11 +387,10 @@ class IdeaClientTestCase(TestCase):
         self.assertEqual(Vote.objects.count(), 1)
         vote = Vote.objects.get()
         self.assertEqual(vote.voter, None)
-        self.assertEqual(vote.ip, 'host:127.0.0.1')
+        self.assertEqual(vote.ip, '127.0.0.1')
 
         r = c.get(
             idea_vote,
-            REMOTE_HOST='host',
         )
 
         # Can only vote once per idea
@@ -406,7 +401,7 @@ class IdeaClientTestCase(TestCase):
         self.assertEqual(Vote.objects.count(), 1)
         vote = Vote.objects.get()
         self.assertEqual(vote.voter, None)
-        self.assertEqual(vote.ip, 'host:127.0.0.1')
+        self.assertEqual(vote.ip, '127.0.0.1')
 
         # Try show that you can still vote on other ideas
         idea = Idea.objects.create(
@@ -419,7 +414,6 @@ class IdeaClientTestCase(TestCase):
         idea_vote = reverse('idea_vote', kwargs={'idea_id': idea.pk})
         r = c.get(
             idea_vote,
-            REMOTE_HOST='host',
         )
 
         response = loads(r.content)
@@ -429,4 +423,4 @@ class IdeaClientTestCase(TestCase):
         self.assertEqual(Vote.objects.count(), 1)
         vote = Vote.objects.get()
         self.assertEqual(vote.voter, None)
-        self.assertEqual(vote.ip, 'host:127.0.0.1')
+        self.assertEqual(vote.ip, '127.0.0.1')

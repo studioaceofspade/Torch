@@ -93,11 +93,10 @@ def vote(request, idea_id):
         pk=idea_id,
     )
     ip = request.META['REMOTE_ADDR']
-    host = request.META['REMOTE_HOST']
     vote, created = create_vote(
         request.user,
         idea,
-        ip='%s:%s' % (host, ip),
+        ip='%s' % ip,
     )
     return HttpResponse(
         dumps(
