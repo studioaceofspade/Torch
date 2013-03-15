@@ -1,5 +1,11 @@
-django==1.5
-django_extensions
-ipython
--e git+git://github.com/jlward/nosedjango.git@v1.0.0b1#egg=nosedjango
-flake8
+Django==1.5
+-e git://github.com/jlward/nosedjango.git@db16a60bedaac24efdd10d6c17a382510593070a#egg=NoseDjango-dev
+distribute==0.6.28
+django-extensions==1.0.3
+flake8==2.0
+ipython==0.13.1
+mccabe==0.2
+nose==1.2.1
+pep8==1.4.4
+pyflakes==0.6.1
+wsgiref==0.1.2
