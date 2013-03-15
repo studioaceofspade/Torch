@@ -18,20 +18,8 @@ EMAIL_HOST_PASSWORD = ''  # TODO This needs to be set.
 
 MANAGERS = ADMINS
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': path.join(
-            PROJECT_ROOT,
-            '..',
-            'dev.db',
-        ),
-        'USER': '',
-        'PASSWORD': '',
-        'HOST': '',
-        'PORT': '',
-    }
-}
+import dj_database_url
+DATABASES['default'] = dj_database_url.config()
 
 # Hosts/domain names that are valid for this site; required if DEBUG is False
 # See https://docs.djangoproject.com/en/1.5/ref/settings/#allowed-hosts
