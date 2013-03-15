@@ -11,3 +11,4 @@ pyflakes==0.6.1
 wsgiref==0.1.2
 dj-database-url==0.2.1
 psycopg2==2.4.6
+gunicorn==0.17.2
