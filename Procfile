@@ -1,1 +1,1 @@
-web: gunicorn torch/wsgi.py
+web: gunicorn torch.wsgi
