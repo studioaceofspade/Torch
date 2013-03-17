@@ -1,3 +1,4 @@
+import os
 from os import path
 # Django settings for torch project.
 
@@ -13,8 +14,8 @@ ADMINS = (
 EMAIL_USE_TLS = True
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
-EMAIL_HOST_USER = ''  # TODO This needs to be set.
-EMAIL_HOST_PASSWORD = ''  # TODO This needs to be set.
+EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER', '')
+EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD', '')
 
 MANAGERS = ADMINS
 
@@ -170,6 +171,6 @@ DATETIME_FORMAT = 'm.d.Y'
 TORCH_PAGINATION = 10
 
 try:
-    from torch.settings_local import *  # noqs
+    from torch.settings_local import *  # noqa
 except ImportError:
     pass
