@@ -107,6 +107,7 @@ MIDDLEWARE_CLASSES = (
 
 PREPEND_WWW = True
 
+
 ROOT_URLCONF = 'torch.urls'
 
 # Python dotted path to the WSGI application used by Django's runserver.
